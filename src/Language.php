@@ -9,11 +9,11 @@ namespace Wearesho\Bobra\Portmone;
 interface Language
 {
     /** @var string Russian language */
-    public const LANGUAGE_RU = 'ru';
+    public const RU = 'ru';
 
     /** @var string English language */
-    public const LANGUAGE_EN = 'en';
+    public const EN = 'en';
 
     /** @var string Ukrainian language */
-    public const LANGUAGE_UK = 'uk';
+    public const UK = 'uk';
 }
