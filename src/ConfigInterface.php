@@ -2,6 +2,8 @@
 
 namespace Wearesho\Bobra\Portmone;
 
+use Wearesho\Bobra\Payments;
+
 /**
  * Interface ConfigInterface
  * @package Wearesho\Bobra\Portmone
@@ -25,4 +27,12 @@ interface ConfigInterface
      * @return string
      */
     public function getPayee(): string;
+
+    /**
+     * Default language, if transaction does not implement HasLanguage interface
+     * @see Language
+     * @see Payments\HasLanguage
+     * @return string
+     */
+    public function getLanguage(): string;
 }
