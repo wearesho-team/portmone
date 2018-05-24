@@ -17,6 +17,9 @@ trait ConfigTrait
     /** @var string */
     protected $payee;
 
+    /** @var string */
+    protected $language;
+
     /**
      * @inheritdoc
      */
@@ -39,5 +42,13 @@ trait ConfigTrait
     public function getPayee(): string
     {
         return $this->payee;
+    }
+
+    /**
+     * @inheritdocs
+     */
+    public function getLanguage(): string
+    {
+        return $this->language;
     }
 }
