@@ -47,4 +47,21 @@ class ConfigTest extends TestCase
             $this->config->getPayee()
         );
     }
+
+    public function testLanguage(): void
+    {
+        $this->assertEquals(
+            Portmone\Language::RU,
+            $this->config->getLanguage()
+        );
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Unsupported language invalidLanguage
+     */
+    public function testInvalidLanguage(): void
+    {
+        new Portmone\Config(static::KEY, static::SECRET, static::PAYEE, 'invalidLanguage');
+    }
 }
