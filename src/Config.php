@@ -8,12 +8,15 @@ namespace Wearesho\Bobra\Portmone;
  */
 class Config implements ConfigInterface
 {
-    use ConfigTrait;
+    use ConfigTrait, ValidateLanguage;
 
-    public function __construct(string $key, string $secret, string $payee)
+    public function __construct(string $key, string $secret, string $payee, string $language = Language::RU)
     {
         $this->key = $key;
         $this->secret = $secret;
         $this->payee = $payee;
+
+        $this->validateLanguage($language);
+        $this->language = $language;
     }
 }
