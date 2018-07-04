@@ -43,4 +43,14 @@ class Client implements Payments\ClientInterface
 
         return $language;
     }
+
+    protected function fetchAmount(Payments\TransactionInterface $transaction): string
+    {
+        return number_format(
+            (float)($transaction->getAmount() / 100),
+            2,
+            '.',
+            ''
+        );
+    }
 }
