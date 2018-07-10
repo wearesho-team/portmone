@@ -20,6 +20,9 @@ trait ConfigTrait
     /** @var string */
     protected $language;
 
+    /** @var string */
+    protected $url;
+
     /**
      * @inheritdoc
      */
@@ -50,5 +53,10 @@ trait ConfigTrait
     public function getLanguage(): string
     {
         return $this->language;
+    }
+
+    public function getUrl(): string
+    {
+        return $this->url;
     }
 }

@@ -35,4 +35,6 @@ interface ConfigInterface
      * @return string
      */
     public function getLanguage(): string;
+
+    public function getUrl(): string;
 }
