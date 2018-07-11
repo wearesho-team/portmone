@@ -34,7 +34,26 @@ class Client implements Payments\ClientInterface
             $pair,
             $language,
             $this->config->getUrl(),
+            $this->transformInfoToAttributes($transaction->getInfo()),
             $transaction->getDescription()
         );
+    }
+
+    protected function transformInfoToAttributes(array $info): array
+    {
+        $max = null;
+        $result = [];
+
+        foreach ($info as $key => $value) {
+            if (is_int($key)) {
+                $max = max($key, $max);
+            } else {
+                $key = is_null($max) ? $max = 1 : ++$max;
+            }
+
+            $result['attribute' . $key] = $value;
+        }
+
+        return $result;
     }
 }

@@ -34,6 +34,9 @@ class Payment implements Payments\PaymentInterface
     /** @var string */
     protected $encoding;
 
+    /** @var array */
+    protected $attributes;
+
     public function __construct(
         string $payeeId,
         int $orderId,
@@ -41,6 +44,7 @@ class Payment implements Payments\PaymentInterface
         Payments\UrlPairInterface $urlPair,
         string $language,
         string $url,
+        array $attributes = [],
         ?string $description = '',
         ?string $encoding = 'UTF-8'
     ) {
@@ -49,6 +53,7 @@ class Payment implements Payments\PaymentInterface
         $this->amount = $amount;
         $this->urlPair = $urlPair;
         $this->url = $url;
+        $this->attributes = $attributes;
         $this->description = $description;
         $this->language = $language;
         $this->encoding = $encoding;
@@ -76,6 +81,10 @@ class Payment implements Payments\PaymentInterface
 
         if (!is_null($this->encoding)) {
             $json['encoding'] = $this->encoding;
+        }
+
+        if (!empty($this->attributes)) {
+            $json = array_merge($json, $this->attributes);
         }
 
         return [

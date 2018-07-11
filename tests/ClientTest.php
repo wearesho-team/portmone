@@ -19,13 +19,19 @@ use Wearesho\Bobra\Portmone\Payment;
  */
 class ClientTest extends TestCase
 {
+    /** @var Client */
+    protected $client;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $config = new Config('testKey', 'testSecret', 'testPayee', Language::EN, 'https://test.config.url/');
+        $this->client = new Client($config);
+    }
+
     public function testCreatePayment(): void
     {
-        $config = new Config('testKey', 'testSecret', 'testPayee', Language::EN, 'https://test.config.url/');
-
-        $client = new Client($config);
-
-        $payment = $client->createPayment(
+        $payment = $this->client->createPayment(
             new UrlPair('https://good.url/', 'https://bad.url/'),
             new Transaction(
                 1,
@@ -42,6 +48,7 @@ class ClientTest extends TestCase
             new UrlPair('https://good.url/', 'https://bad.url/'),
             Language::EN,
             'https://test.config.url/',
+            [],
             'description'
         );
 
@@ -50,12 +57,7 @@ class ClientTest extends TestCase
 
     public function testHasLanguage(): void
     {
-
-        $config = new Config('testKey', 'testSecret', 'testPayee', Language::EN, 'https://test.config.url/');
-
-        $client = new Client($config);
-
-        $payment = $client->createPayment(
+        $payment = $this->client->createPayment(
             new UrlPair('https://good.url/', 'https://bad.url/'),
             new class(1, 10, 'type', 'description')
                 extends Transaction
@@ -69,5 +71,31 @@ class ClientTest extends TestCase
         );
 
         $this->assertEquals(Language::UK, $payment->jsonSerialize()['data']['lang']);
+    }
+
+    public function testAttributes(): void
+    {
+        $payment = $this->client->createPayment(
+            new UrlPair('https://good.url/', 'https://bad.url/'),
+            new Transaction(
+                1,
+                10,
+                'type',
+                'description',
+                [
+                    2 => 'test2',
+                    'stringKey' => 'test3',
+                ]
+            )
+        );
+
+        $data = $payment->jsonSerialize()['data'];
+
+        $this->assertArrayNotHasKey('attribute1', $data);
+        $this->assertArrayHasKey('attribute2', $data);
+        $this->assertArrayHasKey('attribute3', $data);
+
+        $this->assertEquals('test2', $data['attribute2']);
+        $this->assertEquals('test3', $data['attribute3']);
     }
 }

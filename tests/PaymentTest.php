@@ -23,6 +23,9 @@ class PaymentTest extends TestCase
             new UrlPair('https://test.com/'),
             Portmone\Language::RU,
             'https://test.com',
+            [
+                'attribute2' => 'test',
+            ],
             'test description',
             'test encoding'
         );
@@ -30,18 +33,20 @@ class PaymentTest extends TestCase
         $this->assertEquals(1, $payment->getId());
 
         $json = $payment->jsonSerialize();
-        $this->assertEquals('https://test.com', $json['url']);
-
-        $data = $json['data'];
-
-        $this->assertEquals('123', $data['payee_id']);
-        $this->assertEquals(1, $data['shop_order_number']);
-        $this->assertEquals('1.00', $data['bill_amount']);
-        $this->assertEquals('test description', $data['description']);
-        $this->assertEquals('https://test.com/', $data['success_url']);
-        $this->assertEquals('https://test.com/', $data['failure_url']);
-        $this->assertEquals(Portmone\Language::RU, $data['lang']);
-        $this->assertEquals('test encoding', $data['encoding']);
+        $this->assertEquals([
+            'url' => 'https://test.com',
+            'data' => [
+                'payee_id' => '123',
+                'shop_order_number' => 1,
+                'bill_amount' => '1.00',
+                'description' => 'test description',
+                'success_url' => 'https://test.com/',
+                'failure_url' => 'https://test.com/',
+                'lang' => 'ru',
+                'encoding' => 'test encoding',
+                'attribute2' => 'test',
+            ],
+        ], $json);
     }
 
     public function testEmptyDescription(): void
@@ -69,6 +74,7 @@ class PaymentTest extends TestCase
             new UrlPair('https://test.com/'),
             Portmone\Language::RU,
             'https://test.com',
+            [],
             '',
             null
         );
