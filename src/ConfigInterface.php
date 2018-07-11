@@ -10,6 +10,8 @@ use Wearesho\Bobra\Payments;
  */
 interface ConfigInterface
 {
+    public const URL = 'https://www.portmone.com.ua/gateway/';
+
     /**
      * Public key of the Portmone payment service
      * @return string

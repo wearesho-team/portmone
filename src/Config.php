@@ -15,7 +15,7 @@ class Config implements ConfigInterface
         string $secret,
         string $payee,
         string $language = Language::RU,
-        string $url = 'https://www.portmone.com.ua/gateway/'
+        string $url = ConfigInterface::URL
     ) {
         $this->key = $key;
         $this->secret = $secret;
