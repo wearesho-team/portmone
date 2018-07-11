@@ -48,7 +48,7 @@ class Client implements Payments\ClientInterface
             if (is_int($key)) {
                 $max = max($key, $max);
             } else {
-                $key = is_null($max) ? $max = 1 : ++$max;
+                $key = ++$max;
             }
 
             $result['attribute' . $key] = $value;
