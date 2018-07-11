@@ -4,9 +4,7 @@ namespace Wearesho\Bobra\Portmone\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Wearesho\Bobra\Payments\UrlPair;
-use Wearesho\Bobra\Portmone\{
-    Language, Payment
-};
+use Wearesho\Bobra\Portmone;
 
 /**
  * Class PaymentTest
@@ -18,12 +16,12 @@ class PaymentTest extends TestCase
 {
     public function testFields(): void
     {
-        $payment = new Payment(
+        $payment = new Portmone\Payment(
             "123",
             1,
             100,
             new UrlPair('https://test.com/'),
-            Language::RU,
+            Portmone\Language::RU,
             'https://test.com',
             'test description',
             'test encoding'
@@ -42,18 +40,18 @@ class PaymentTest extends TestCase
         $this->assertEquals('test description', $data['description']);
         $this->assertEquals('https://test.com/', $data['success_url']);
         $this->assertEquals('https://test.com/', $data['failure_url']);
-        $this->assertEquals(Language::RU, $data['lang']);;
+        $this->assertEquals(Portmone\Language::RU, $data['lang']);
         $this->assertEquals('test encoding', $data['encoding']);
     }
 
     public function testEmptyDescription(): void
     {
-        $payment = new Payment(
+        $payment = new Portmone\Payment(
             "123",
             1,
             100,
             new UrlPair('https://test.com/'),
-            Language::RU,
+            Portmone\Language::RU,
             'https://test.com'
         );
 
@@ -64,12 +62,12 @@ class PaymentTest extends TestCase
 
     public function testEmptyEncoding(): void
     {
-        $payment = new Payment(
+        $payment = new Portmone\Payment(
             "123",
             1,
             100,
             new UrlPair('https://test.com/'),
-            Language::RU,
+            Portmone\Language::RU,
             'https://test.com',
             '',
             null
