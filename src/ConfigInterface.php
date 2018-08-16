@@ -35,4 +35,11 @@ interface ConfigInterface
      * @return string
      */
     public function getLanguage(): string;
+
+    /**
+     * Request url for sending response-data about payers
+     * @see Notification\Client
+     * @return string
+     */
+    public function getRequestUrl(): string;
 }
