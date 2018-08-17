@@ -8,7 +8,7 @@ use Wearesho\Bobra\Portmone\NotificationInterface;
  * Class Payment
  * @package Wearesho\Bobra\Portmone\Notification
  */
-abstract class Payment implements NotificationInterface,\JsonSerializable
+abstract class Payment implements NotificationInterface, \JsonSerializable
 {
     /** @var Entities\CompanyData */
     protected $company;
