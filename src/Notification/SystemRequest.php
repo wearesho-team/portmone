@@ -1,13 +1,14 @@
 <?php
 
-namespace Wearesho\Bobra\Portmone\Notification\Entities;
+namespace Wearesho\Bobra\Portmone\Notification;
 
 use Wearesho\Bobra\Portmone\Notification\Collections\Payers;
+use Wearesho\Bobra\Portmone\Notification\Entities\PayerData;
 use Wearesho\Bobra\Portmone\NotificationInterface;
 
 /**
  * Class SystemRequest
- * @package Wearesho\Bobra\Portmone\Notification\Entities
+ * @package Wearesho\Bobra\Portmone\Notification
  */
 class SystemRequest implements \JsonSerializable, NotificationInterface
 {
@@ -27,7 +28,9 @@ class SystemRequest implements \JsonSerializable, NotificationInterface
     {
         return [
             'payee' => $this->payee,
-            'payers' => $this->payers->jsonSerialize(),
+            'payers' => array_map(function (PayerData $payer) {
+                return $payer->jsonSerialize();
+            }, $this->payers->jsonSerialize()),
         ];
     }
 

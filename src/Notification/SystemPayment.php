@@ -1,26 +1,25 @@
 <?php
 
-namespace Wearesho\Bobra\Portmone\Notification\Entities;
+namespace Wearesho\Bobra\Portmone\Notification;
 
 use Carbon\Carbon;
 
 use Wearesho\Bobra\Payments\PaymentInterface;
-use Wearesho\Bobra\Portmone\Notification\Collections;
 use Wearesho\Bobra\Portmone\NotificationInterface;
 
 /**
  * Class SystemPayment
- * @package Wearesho\Bobra\Portmone\Notification\Entities
+ * @package Wearesho\Bobra\Portmone\Notification
  */
 class SystemPayment implements PaymentInterface, NotificationInterface
 {
-    /** @var CompanyData */
+    /** @var Entities\CompanyData */
     protected $company;
 
-    /** @var BankData */
+    /** @var Entities\BankData */
     protected $bank;
 
-    /** @var BillData */
+    /** @var Entities\BillData */
     protected $bill;
 
     /** @var \DateTimeInterface */
@@ -45,9 +44,9 @@ class SystemPayment implements PaymentInterface, NotificationInterface
     protected $meters;
 
     public function __construct(
-        CompanyData $company,
-        BankData $bank,
-        BillData $bill,
+        Entities\CompanyData $company,
+        Entities\BankData $bank,
+        Entities\BillData $bill,
         \DateTimeInterface $date,
         float $amount,
         float $commission,
@@ -79,8 +78,12 @@ class SystemPayment implements PaymentInterface, NotificationInterface
             'commission' => $this->commission,
             'debt' => $this->debt,
             'authCode' => $this->authCode,
-            'payers' => $this->payers->jsonSerialize(),
-            'meters' => $this->meters->jsonSerialize()
+            'payers' => array_map(function (Entities\PayerData $payer) {
+                return $payer->jsonSerialize();
+            }, $this->payers->jsonSerialize()),
+            'meters' => array_map(function (Entities\MeterData $meter) {
+                return $meter->jsonSerialize();
+            }, $this->meters->jsonSerialize())
         ];
     }
 
@@ -94,17 +97,17 @@ class SystemPayment implements PaymentInterface, NotificationInterface
         return $this->bill->getId();
     }
 
-    public function getCompany(): CompanyData
+    public function getCompany(): Entities\CompanyData
     {
         return $this->company;
     }
 
-    public function getBank(): BankData
+    public function getBank(): Entities\BankData
     {
         return $this->bank;
     }
 
-    public function getBill(): BillData
+    public function getBill(): Entities\BillData
     {
         return $this->bill;
     }

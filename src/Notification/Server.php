@@ -28,14 +28,14 @@ class Server implements XmlTags
 
         switch ($type) {
             case static::REQUESTS:
-                return new Entities\SystemRequest(
+                return new SystemRequest(
                     $xml->{static::PAYEE},
                     $this->fetchPayers($xml)
                 );
             case static::BILLS:
                 $root = $xml->{static::BILL};
 
-                return new Entities\SystemPayment(
+                return new SystemPayment(
                     new Entities\CompanyData(
                         (string)$root->{static::PAYEE}->{static::NAME},
                         (string)$root->{static::PAYEE}->{static::CODE}

@@ -4,15 +4,10 @@ namespace Wearesho\Bobra\Portmone\Tests\Unit\Notification;
 
 use Carbon\Carbon;
 
-use Wearesho\Bobra\Portmone\Notification\Collections\Meters;
-use Wearesho\Bobra\Portmone\Notification\Collections\Payers;
-use Wearesho\Bobra\Portmone\Notification\Entities\BankData;
-use Wearesho\Bobra\Portmone\Notification\Entities\BillData;
-use Wearesho\Bobra\Portmone\Notification\Entities\CompanyData;
-use Wearesho\Bobra\Portmone\Notification\Entities\MeterData;
-use Wearesho\Bobra\Portmone\Notification\Entities\PayerData;
-use Wearesho\Bobra\Portmone\Notification\Entities\SystemPayment;
-use Wearesho\Bobra\Portmone\Notification\Entities\SystemRequest;
+use Wearesho\Bobra\Portmone\Notification\Collections;
+use Wearesho\Bobra\Portmone\Notification\Entities;
+use Wearesho\Bobra\Portmone\Notification\SystemPayment;
+use Wearesho\Bobra\Portmone\Notification\SystemRequest;
 use Wearesho\Bobra\Portmone\Notification\Server;
 
 use PHPUnit\Framework\TestCase;
@@ -56,14 +51,14 @@ class ServerTest extends TestCase
         $this->assertInstanceOf(SystemRequest::class, $notification);
         $this->assertEquals('1001', $notification->getPayee());
         $this->assertEquals(
-            new Payers([
-                new PayerData(
+            new Collections\Payers([
+                new Entities\PayerData(
                     '08967563',
                     [
                         'ATTRIBUTE1' => '12082010',
                     ]
                 ),
-                new PayerData(
+                new Entities\PayerData(
                     '03567892',
                     [
                         'ATTRIBUTE1' => '11052009',
@@ -121,16 +116,16 @@ class ServerTest extends TestCase
 
         $this->assertEquals(
             new SystemPayment(
-                new CompanyData(
+                new Entities\CompanyData(
                     'ПАТ «Березка»',
                     '1001'
                 ),
-                new BankData(
+                new Entities\BankData(
                     'АТ "Банк "Фінанси та Кредит"',
                     '300131',
                     '29244020902980'
                 ),
-                new BillData(
+                new Entities\BillData(
                     14561,
                     '3892/1',
                     Carbon::parse('2010-02-01'),
@@ -141,11 +136,11 @@ class ServerTest extends TestCase
                 0,
                 0,
                 '739280',
-                new Payers([
-                    new PayerData('08967563', ['ATTRIBUTE1' => '12082010'])
+                new Collections\Payers([
+                    new Entities\PayerData('08967563', ['ATTRIBUTE1' => '12082010'])
                 ]),
-                new Meters([
-                    new MeterData(
+                new Collections\Meters([
+                    new Entities\MeterData(
                         'testType',
                         '23456',
                         '12345',
@@ -157,5 +152,88 @@ class ServerTest extends TestCase
             ),
             $notification
         );
+
+        $data = '<?xml version="1.0" encoding="UTF-8"?>
+            <BILLS>
+                <BILL>
+                    <PAYEE>
+                        <NAME>ПАТ «Березка»</NAME> 
+                        <CODE>1001</CODE> 
+                    </PAYEE>
+                    <BANK>
+                        <NAME>АТ "Банк "Фінанси та Кредит"</NAME> 
+                        <CODE>300131</CODE> 
+                        <ACCOUNT>29244020902980</ACCOUNT> 
+                    </BANK>
+                    <BILL_ID>14561</BILL_ID> 
+                    <BILL_NUMBER>3892/1</BILL_NUMBER> 
+                    <BILL_DATE>2010-02-01</BILL_DATE> 
+                    <BILL_PERIOD>0110</BILL_PERIOD> 
+                    <PAY_DATE>2010-02-15</PAY_DATE> 
+                    <PAYED_AMOUNT>120.35</PAYED_AMOUNT> 
+                    <PAYED_COMMISSION>0</PAYED_COMMISSION> 
+                    <PAYED_DEBT>0</PAYED_DEBT> 
+                    <AUTH_CODE>739280</AUTH_CODE> 
+                    <PAYER>
+                        <CONTRACT_NUMBER>08967563</CONTRACT_NUMBER>
+                        <ATTRIBUTE1>12082010</ATTRIBUTE1>
+                    </PAYER>
+                </BILL>
+            </BILLS>';
+
+        /** @noinspection PhpUnhandledExceptionInspection */
+        /** @var SystemPayment $notification */
+        $notification = $this->server->handle($data);
+
+        $this->assertEquals(
+            new SystemPayment(
+                new Entities\CompanyData(
+                    'ПАТ «Березка»',
+                    '1001'
+                ),
+                new Entities\BankData(
+                    'АТ "Банк "Фінанси та Кредит"',
+                    '300131',
+                    '29244020902980'
+                ),
+                new Entities\BillData(
+                    14561,
+                    '3892/1',
+                    Carbon::parse('2010-02-01'),
+                    '0110'
+                ),
+                Carbon::parse('2010-02-15'),
+                120.35,
+                0,
+                0,
+                '739280',
+                new Collections\Payers([
+                    new Entities\PayerData('08967563', ['ATTRIBUTE1' => '12082010'])
+                ]),
+                new Collections\Meters()
+            ),
+            $notification
+        );
+    }
+
+    /**
+     * @expectedException \Wearesho\Bobra\Portmone\Notification\InvalidDataException
+     * @expectedExceptionMessage Data contain invalid type
+     */
+    public function testInvalidDataHandle(): void
+    {
+        $data = '<?xml version="1.0" encoding="UTF-8"?><TEST></TEST>';
+        $this->server->handle($data);
+    }
+
+    /**
+     * @expectedException \Wearesho\Bobra\Portmone\Notification\InvalidDataException
+     * @expectedExceptionMessage simplexml_load_string(): Entity: line 1: parser error : Start tag expected, '<' not
+     *                           found Data contain invalid xml
+     */
+    public function testInvalidXmlHandle(): void
+    {
+        $data = 'testInvalidXml';
+        $this->server->handle($data);
     }
 }

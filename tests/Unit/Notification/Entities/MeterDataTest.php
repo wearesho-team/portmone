@@ -3,6 +3,7 @@
 namespace Wearesho\Bobra\Portmone\Tests\Unit\Notification\Entities;
 
 use Wearesho\Bobra\Portmone\Notification\Entities\MeterData;
+
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -68,16 +69,34 @@ class MeterDataTest extends TestCase
 
     public function testGetAmount(): void
     {
-
+        $this->assertEquals(
+            static::AMOUNT,
+            $this->meterData->getAmount()
+        );
     }
 
     public function testJsonSerialize(): void
     {
-
+        $this->assertArraySubset(
+            [
+                'type' => static::TYPE,
+                'counter' => [
+                    'current' => static::CURRENT_COUNTER,
+                    'previous' => static::PREVIOUS_COUNTER,
+                ],
+                'subsidy' => static::SUBSIDY,
+                'debt' => static::DEBT,
+                'amount' => static::AMOUNT,
+            ],
+            $this->meterData->jsonSerialize()
+        );
     }
 
     public function testGetPreviousCounter(): void
     {
-
+        $this->assertEquals(
+            static::PREVIOUS_COUNTER,
+            $this->meterData->getPreviousCounter()
+        );
     }
 }

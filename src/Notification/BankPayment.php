@@ -1,12 +1,14 @@
 <?php
 
-namespace Wearesho\Bobra\Portmone\Notification\Entities;
+namespace Wearesho\Bobra\Portmone\Notification;
 
 use Wearesho\Bobra\Portmone\NotificationInterface;
 
 /**
  * Class BankPayment
- * @package Wearesho\Bobra\Portmone\Notification\Entities
+ * @package Wearesho\Bobra\Portmone\Notification
+ *
+ * @todo: implement
  */
 class BankPayment implements NotificationInterface
 {
