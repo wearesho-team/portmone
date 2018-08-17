@@ -38,7 +38,7 @@ class Server
                     $xml->{XmlTags::PAYEE},
                     new Collections\Payers(array_map(function (\SimpleXMLElement $payerXml) {
                         return $this->fetchPayerData($payerXml);
-                    }, Convert::SimpleXmlToArray($xml->{XmlTags::PAYER})))
+                    }, Convert::simpleXmlToArray($xml->{XmlTags::PAYER})))
                 );
             case XmlTags::BILLS:
                 $bill = $xml->{XmlTags::BILL};
@@ -62,7 +62,7 @@ class Server
                     $this->fetchBankData($payOrder),
                     new Collections\Bills(array_map(function (\SimpleXMLElement $bill) {
                         return $this->fetchBillData($bill);
-                    }, Convert::SimpleXmlToArray($payOrder->{XmlTags::BILLS}->{XmlTags::BILL})))
+                    }, Convert::simpleXmlToArray($payOrder->{XmlTags::BILLS}->{XmlTags::BILL})))
                 );
             default:
                 throw new InvalidDataException($data, 'Data contain invalid type');
