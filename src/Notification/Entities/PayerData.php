@@ -14,14 +14,10 @@ class PayerData implements \JsonSerializable
     /** @var array */
     protected $attributes;
 
-    /** @var PayerType|null */
-    protected $type;
-
-    public function __construct(string $contractNumber, array $attributes = [], PayerType $type = null)
+    public function __construct(string $contractNumber, array $attributes = [])
     {
         $this->contractNumber = $contractNumber;
         $this->attributes = $attributes;
-        $this->type = $type;
     }
 
     public function jsonSerialize(): array
@@ -30,10 +26,6 @@ class PayerData implements \JsonSerializable
             'contractNumber' => $this->contractNumber,
             'attributes' => $this->attributes,
         ];
-
-        if ($this->type) {
-            $json['type'] = $this->type->getKey();
-        }
 
         return $json;
     }
@@ -46,10 +38,5 @@ class PayerData implements \JsonSerializable
     public function getAttributes(): array
     {
         return $this->attributes;
-    }
-
-    public function getType(): ?PayerType
-    {
-        return $this->type;
     }
 }

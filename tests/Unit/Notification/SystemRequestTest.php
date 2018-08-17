@@ -4,7 +4,7 @@ namespace Wearesho\Bobra\Portmone\Tests\Unit\Notification;
 
 use Wearesho\Bobra\Portmone\Notification\Collections\Payers;
 use Wearesho\Bobra\Portmone\Notification\Entities\PayerData;
-use Wearesho\Bobra\Portmone\Notification\SystemRequest;
+use Wearesho\Bobra\Portmone\Notification\InternalRequest;
 
 use PHPUnit\Framework\TestCase;
 
@@ -18,12 +18,12 @@ class SystemRequestTest extends TestCase
     protected const PAYEE = 'testPayee';
     protected const CONTRACT_NUMBER = 'testNumber';
 
-    /** @var SystemRequest */
+    /** @var InternalRequest */
     protected $systemRequest;
 
     protected function setUp(): void
     {
-        $this->systemRequest = new SystemRequest(
+        $this->systemRequest = new InternalRequest(
             static::PAYEE,
             new Payers([
                 new PayerData(static::CONTRACT_NUMBER),

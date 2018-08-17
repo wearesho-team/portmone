@@ -1,10 +1,10 @@
 <?php
 
-namespace Wearesho\Bobra\Portmone;
+namespace Wearesho\Bobra\Portmone\Helpers;
 
 /**
  * Class BaseCollection
- * @package Wearesho\Bobra\Portmone
+ * @package Wearesho\Bobra\Portmone\Helpers
  */
 abstract class BaseCollection extends \ArrayObject implements \JsonSerializable
 {

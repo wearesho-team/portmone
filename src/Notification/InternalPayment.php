@@ -6,7 +6,7 @@ namespace Wearesho\Bobra\Portmone\Notification;
  * Class SystemPayment
  * @package Wearesho\Bobra\Portmone\Notification
  */
-class SystemPayment extends Payment
+class InternalPayment extends Payment
 {
     /** @var Entities\BillData */
     protected $bill;

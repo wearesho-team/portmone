@@ -2,7 +2,7 @@
 
 namespace Wearesho\Bobra\Portmone\Notification\Collections;
 
-use Wearesho\Bobra\Portmone\BaseCollection;
+use Wearesho\Bobra\Portmone\Helpers\BaseCollection;
 use Wearesho\Bobra\Portmone\Notification\Entities\MeterData;
 
 /**

@@ -7,8 +7,8 @@ use Carbon\Carbon;
 use Wearesho\Bobra\Portmone\Notification\BankPayment;
 use Wearesho\Bobra\Portmone\Notification\Collections;
 use Wearesho\Bobra\Portmone\Notification\Entities;
-use Wearesho\Bobra\Portmone\Notification\SystemPayment;
-use Wearesho\Bobra\Portmone\Notification\SystemRequest;
+use Wearesho\Bobra\Portmone\Notification\InternalPayment;
+use Wearesho\Bobra\Portmone\Notification\InternalRequest;
 use Wearesho\Bobra\Portmone\Notification\Server;
 
 use PHPUnit\Framework\TestCase;
@@ -46,10 +46,10 @@ class ServerTest extends TestCase
             </REQUESTS>';
 
         /** @noinspection PhpUnhandledExceptionInspection */
-        /** @var SystemRequest $notification */
+        /** @var InternalRequest $notification */
         $notification = $this->server->handle($data);
 
-        $this->assertInstanceOf(SystemRequest::class, $notification);
+        $this->assertInstanceOf(InternalRequest::class, $notification);
         $this->assertEquals('1001', $notification->getPayee());
         $this->assertEquals(
             new Collections\Payers([
@@ -112,11 +112,11 @@ class ServerTest extends TestCase
             </BILLS>';
 
         /** @noinspection PhpUnhandledExceptionInspection */
-        /** @var SystemPayment $notification */
+        /** @var InternalPayment $notification */
         $notification = $this->server->handle($data);
 
         $this->assertEquals(
-            new SystemPayment(
+            new InternalPayment(
                 new Entities\CompanyData(
                     'ПАТ «Березка»',
                     '1001'

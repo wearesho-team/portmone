@@ -4,7 +4,7 @@ namespace Wearesho\Bobra\Portmone\Tests\Unit\Notification;
 
 use Carbon\Carbon;
 
-use Wearesho\Bobra\Portmone\Notification\SystemPayment;
+use Wearesho\Bobra\Portmone\Notification\InternalPayment;
 use Wearesho\Bobra\Portmone\Notification\Entities;
 
 /**
@@ -14,14 +14,14 @@ use Wearesho\Bobra\Portmone\Notification\Entities;
  */
 class SystemPaymentTest extends PaymentTestCase
 {
-    /** @var SystemPayment */
+    /** @var InternalPayment */
     protected $payment;
 
     protected function setUp()
     {
         parent::setUp();
 
-        $this->payment = new SystemPayment(
+        $this->payment = new InternalPayment(
             $this->companyData,
             $this->bankData,
             new Entities\BillData(

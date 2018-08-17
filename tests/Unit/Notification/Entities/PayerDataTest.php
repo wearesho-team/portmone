@@ -27,8 +27,7 @@ class PayerDataTest extends TestCase
     {
         $this->payerData = new Entities\PayerData(
             static::CONTRACT_NUMBER,
-            static::ATTRIBUTES,
-            Entities\PayerType::APPROVED()
+            static::ATTRIBUTES
         );
     }
 
@@ -45,18 +44,9 @@ class PayerDataTest extends TestCase
         $this->assertArraySubset(
             [
                 'contractNumber' => static::CONTRACT_NUMBER,
-                'attributes' => static::ATTRIBUTES,
-                'type' => 'APPROVED'
+                'attributes' => static::ATTRIBUTES
             ],
             $this->payerData->jsonSerialize()
-        );
-    }
-
-    public function testGetType(): void
-    {
-        $this->assertEquals(
-            Entities\PayerType::APPROVED(),
-            $this->payerData->getType()
         );
     }
 

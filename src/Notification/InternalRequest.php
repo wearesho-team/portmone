@@ -10,7 +10,7 @@ use Wearesho\Bobra\Portmone\NotificationInterface;
  * Class SystemRequest
  * @package Wearesho\Bobra\Portmone\Notification
  */
-class SystemRequest implements \JsonSerializable, NotificationInterface
+class InternalRequest implements \JsonSerializable, NotificationInterface
 {
     /** @var string */
     protected $payee;
