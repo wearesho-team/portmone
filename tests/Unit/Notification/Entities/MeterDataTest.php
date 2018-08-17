@@ -2,9 +2,9 @@
 
 namespace Wearesho\Bobra\Portmone\Tests\Unit\Notification\Entities;
 
-use Wearesho\Bobra\Portmone\Notification\Entities\MeterData;
-
 use PHPUnit\Framework\TestCase;
+
+use Wearesho\Bobra\Portmone\Notification\Entities\MeterData;
 
 /**
  * Class MeterDataTest

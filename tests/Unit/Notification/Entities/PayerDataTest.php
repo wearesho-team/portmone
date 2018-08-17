@@ -2,9 +2,9 @@
 
 namespace Wearesho\Bobra\Portmone\Tests\Unit\Notification\Entities;
 
-use Wearesho\Bobra\Portmone\Notification\Entities\PayerData;
 use PHPUnit\Framework\TestCase;
-use Wearesho\Bobra\Portmone\Notification\Entities\PayerType;
+
+use Wearesho\Bobra\Portmone\Notification\Entities;
 
 /**
  * Class PayerDataTest
@@ -20,15 +20,15 @@ class PayerDataTest extends TestCase
     ];
     protected const CONTRACT_NUMBER = '213546';
 
-    /** @var PayerData */
+    /** @var Entities\PayerData */
     protected $payerData;
 
     protected function setUp(): void
     {
-        $this->payerData = new PayerData(
+        $this->payerData = new Entities\PayerData(
             static::CONTRACT_NUMBER,
             static::ATTRIBUTES,
-            PayerType::APPROVED()
+            Entities\PayerType::APPROVED()
         );
     }
 
@@ -55,7 +55,7 @@ class PayerDataTest extends TestCase
     public function testGetType(): void
     {
         $this->assertEquals(
-            PayerType::APPROVED(),
+            Entities\PayerType::APPROVED(),
             $this->payerData->getType()
         );
     }

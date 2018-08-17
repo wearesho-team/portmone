@@ -13,6 +13,8 @@ interface XmlTags
     public const PAY_ORDERS = 'PAY_ORDERS';
 
     public const PAYEE = 'PAYEE';
+    public const COMPANY_NAME = 'NAME';
+    public const COMPANY_CODE = 'CODE';
 
     public const PAYER = 'PAYER';
     public const CONTRACT_NUMBER = 'CONTRACT_NUMBER';
@@ -27,9 +29,9 @@ interface XmlTags
     public const BILL_DATE = 'BILL_DATE';
 
     public const BANK = 'BANK';
-    public const NAME = 'NAME';
-    public const CODE = 'CODE';
-    public const ACCOUNT = 'ACCOUNT';
+    public const BANK_NAME = 'NAME';
+    public const BANK_CODE = 'CODE';
+    public const BANK_ACCOUNT = 'ACCOUNT';
 
     public const PAY_DATE = 'PAY_DATE';
     public const PAYED_AMOUNT = 'PAYED_AMOUNT';
@@ -46,4 +48,10 @@ interface XmlTags
     public const ITEM_COUNTER = 'ITEM_COUNTER';
     public const ITEM_PREV_COUNTER = 'ITEM_PREV_COUNTER';
     public const ITEM_PAYED_DEBT = 'ITEM_PAYED_DEBT';
+
+    public const PAY_ORDER = 'PAY_ORDER';
+    public const PAY_ORDER_ID = 'PAY_ORDER_ID';
+    public const PAY_ORDER_DATE = 'PAY_ORDER_DATE';
+    public const PAY_ORDER_NUMBER = 'PAY_ORDER_NUMBER';
+    public const PAY_ORDER_AMOUNT = 'PAY_ORDER_AMOUNT';
 }

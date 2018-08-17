@@ -2,9 +2,9 @@
 
 namespace Wearesho\Bobra\Portmone\Tests\Unit\Notification\Entities;
 
-use Wearesho\Bobra\Portmone\Notification\Entities\BankData;
-
 use PHPUnit\Framework\TestCase;
+
+use Wearesho\Bobra\Portmone\Notification\Entities\BankData;
 
 /**
  * Class BankDataTest
