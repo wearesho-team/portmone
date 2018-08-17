@@ -4,7 +4,7 @@ namespace Wearesho\Bobra\Portmone\Tests\Unit\Notification\Entities;
 
 use PHPUnit\Framework\TestCase;
 
-use Wearesho\Bobra\Portmone\Direct\Entities\CompanyData;
+use Wearesho\Bobra\Portmone\Direct\Entities\Company;
 
 /**
  * Class CompanyDataTest
@@ -16,12 +16,12 @@ class CompanyDataTest extends TestCase
     protected const CODE = 'testCode';
     protected const NAME = 'testName';
 
-    /** @var CompanyData */
+    /** @var Company */
     protected $companyData;
 
     protected function setUp(): void
     {
-        $this->companyData = new CompanyData(static::NAME, static::CODE);
+        $this->companyData = new Company(static::NAME, static::CODE);
     }
 
     public function testGetCode(): void

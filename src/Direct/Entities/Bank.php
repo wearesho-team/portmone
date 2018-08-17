@@ -3,10 +3,10 @@
 namespace Wearesho\Bobra\Portmone\Direct\Entities;
 
 /**
- * Class Company
+ * Class Bank
  * @package Wearesho\Bobra\Portmone\Direct\Entities
  */
-class CompanyData implements \JsonSerializable
+class Bank implements \JsonSerializable
 {
     /** @var string */
     protected $name;
@@ -14,10 +14,14 @@ class CompanyData implements \JsonSerializable
     /** @var string */
     protected $code;
 
-    public function __construct(string $name, string $code)
+    /** @var string */
+    protected $account;
+
+    public function __construct(string $name, string $code, string $account)
     {
         $this->name = $name;
         $this->code = $code;
+        $this->account = $account;
     }
 
     public function jsonSerialize(): array
@@ -25,6 +29,7 @@ class CompanyData implements \JsonSerializable
         return [
             'name' => $this->name,
             'code' => $this->code,
+            'account' => $this->account,
         ];
     }
 
@@ -36,5 +41,10 @@ class CompanyData implements \JsonSerializable
     public function getCode(): string
     {
         return $this->code;
+    }
+
+    public function getAccount(): string
+    {
+        return $this->account;
     }
 }

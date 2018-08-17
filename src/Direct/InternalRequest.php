@@ -3,7 +3,7 @@
 namespace Wearesho\Bobra\Portmone\Direct;
 
 use Wearesho\Bobra\Portmone\Direct\Collections\Payers;
-use Wearesho\Bobra\Portmone\Direct\Entities\PayerData;
+use Wearesho\Bobra\Portmone\Direct\Entities\Payer;
 use Wearesho\Bobra\Portmone\NotificationInterface;
 
 /**
@@ -28,7 +28,7 @@ class InternalRequest implements \JsonSerializable, NotificationInterface
     {
         return [
             'payee' => $this->payee,
-            'payers' => array_map(function (PayerData $payer) {
+            'payers' => array_map(function (Payer $payer) {
                 return $payer->jsonSerialize();
             }, $this->payers->jsonSerialize()),
         ];

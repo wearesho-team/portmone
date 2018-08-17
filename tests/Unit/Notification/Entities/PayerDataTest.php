@@ -20,12 +20,12 @@ class PayerDataTest extends TestCase
     ];
     protected const CONTRACT_NUMBER = '213546';
 
-    /** @var Entities\PayerData */
+    /** @var Entities\Payer */
     protected $payerData;
 
     protected function setUp(): void
     {
-        $this->payerData = new Entities\PayerData(
+        $this->payerData = new Entities\Payer(
             static::CONTRACT_NUMBER,
             static::ATTRIBUTES
         );

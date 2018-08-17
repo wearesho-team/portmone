@@ -2,17 +2,14 @@
 
 namespace Wearesho\Bobra\Portmone\Direct\Collections;
 
+use Wearesho\Bobra\Portmone\Direct\Entities\OrderBill;
 use Wearesho\Bobra\Portmone\Helpers\BaseCollection;
-use Wearesho\Bobra\Portmone\Direct\Entities\Payer;
 
 /**
- * Class Payers
+ * Class OrderBills
  * @package Wearesho\Bobra\Portmone\Direct\Collections
  */
-class Payers extends BaseCollection
+class OrderBills extends BaseCollection
 {
-    public function type(): string
-    {
-        return Payer::class;
-    }
+    protected const TYPE = OrderBill::class;
 }

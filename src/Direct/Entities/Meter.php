@@ -6,10 +6,16 @@ namespace Wearesho\Bobra\Portmone\Direct\Entities;
  * Class Meter
  * @package Wearesho\Bobra\Portmone\Direct\Entities
  */
-class MeterData implements \JsonSerializable
+class Meter implements \JsonSerializable
 {
     /** @var string */
     protected $type;
+
+    /** @var float */
+    protected $amount;
+
+    /** @var float */
+    protected $subsidy;
 
     /** @var string */
     protected $currentCounter;
@@ -18,13 +24,7 @@ class MeterData implements \JsonSerializable
     protected $previousCounter;
 
     /** @var float */
-    protected $subsidy;
-
-    /** @var float */
     protected $debt;
-
-    /** @var float */
-    protected $amount;
 
     public function __construct(
         string $type,

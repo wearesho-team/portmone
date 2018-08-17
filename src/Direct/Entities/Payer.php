@@ -6,7 +6,7 @@ namespace Wearesho\Bobra\Portmone\Direct\Entities;
  * Class Payer
  * @package Wearesho\Bobra\Portmone\Direct\Entities
  */
-class PayerData implements \JsonSerializable
+class Payer implements \JsonSerializable
 {
     /** @var string */
     protected $contractNumber;

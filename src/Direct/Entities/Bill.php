@@ -12,7 +12,7 @@ use Wearesho\Bobra\Portmone\Direct\Collections\Meters;
  */
 abstract class Bill implements \JsonSerializable
 {
-    /** @var PayerData */
+    /** @var Payer */
     protected $payer;
 
     /** @var string */
@@ -31,7 +31,7 @@ abstract class Bill implements \JsonSerializable
     protected $meters;
 
     public function __construct(
-        PayerData $payer,
+        Payer $payer,
         string $number,
         \DateTimeInterface $billDate,
         float $amount,
@@ -56,7 +56,7 @@ abstract class Bill implements \JsonSerializable
         ];
 
         if ($this->meters) {
-            $json['meters'] = array_map(function (MeterData $meter) {
+            $json['meters'] = array_map(function (Meter $meter) {
                 return $meter->jsonSerialize();
             }, $this->meters->jsonSerialize());
         }
@@ -64,7 +64,7 @@ abstract class Bill implements \JsonSerializable
         return $json;
     }
 
-    public function getPayer(): PayerData
+    public function getPayer(): Payer
     {
         return $this->payer;
     }

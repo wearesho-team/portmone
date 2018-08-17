@@ -14,8 +14,8 @@ class InternalPaymentNotification extends Payment
     protected $bills;
 
     public function __construct(
-        Entities\CompanyData $company,
-        Entities\BankData $bank,
+        Entities\Company $company,
+        Entities\Bank $bank,
         InternalBills $bills
     ) {
         $this->bills = $bills;

@@ -43,10 +43,10 @@ abstract class PaymentTestCase extends TestCase
     /** @var Payment */
     protected $payment;
     
-    /** @var Entities\CompanyData */
+    /** @var Entities\Company */
     protected $companyData;
     
-    /** @var Entities\BankData */
+    /** @var Entities\Bank */
     protected $bankData;
 
     /** @var Collections\Payers */
@@ -57,17 +57,17 @@ abstract class PaymentTestCase extends TestCase
     
     protected function setUp()
     {
-        $this->companyData = new Entities\CompanyData(
+        $this->companyData = new Entities\Company(
             static::COMPANY_NAME,
             static::COMPANY_CODE
         );
-        $this->bankData = new Entities\BankData(
+        $this->bankData = new Entities\Bank(
             static::BANK_NAME,
             static::BANK_CODE,
             static::BANK_ACCOUNT
         );
         $this->meters = new Collections\Meters([
-            new Entities\MeterData(
+            new Entities\Meter(
                 static::METER_TYPE,
                 static::METER_CURRENT_COUNTER,
                 static::METER_PREVIOUS_COUNTER,
@@ -89,7 +89,7 @@ abstract class PaymentTestCase extends TestCase
     public function testGetCompany(): void
     {
         $this->assertEquals(
-            new Entities\CompanyData(
+            new Entities\Company(
                 static::COMPANY_NAME,
                 static::COMPANY_CODE
             ),
@@ -100,7 +100,7 @@ abstract class PaymentTestCase extends TestCase
     public function testGetBank(): void
     {
         $this->assertEquals(
-            new Entities\BankData(
+            new Entities\Bank(
                 static::BANK_NAME,
                 static::BANK_CODE,
                 static::BANK_ACCOUNT

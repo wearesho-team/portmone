@@ -20,8 +20,8 @@ class BankPayment extends Payment implements Payments\PaymentInterface
 
     public function __construct(
         PayOrderData $payOrder,
-        Entities\CompanyData $company,
-        Entities\BankData $bank,
+        Entities\Company $company,
+        Entities\Bank $bank,
         Collections\Bills $bills
     ) {
         $this->payOrder = $payOrder;

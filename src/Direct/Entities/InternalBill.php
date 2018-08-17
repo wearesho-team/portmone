@@ -14,39 +14,38 @@ use Wearesho\Bobra\Portmone\Direct\Collections\Meters;
  * Class InternalBill
  * @package Wearesho\Bobra\Portmone\Direct\Entities
  */
-class InternalBill extends Bill implements \JsonSerializable, PaymentInterface
+class InternalBill extends OrderBill implements \JsonSerializable
 {
-    use PaymentTrait;
+    /** @var Bank */
+    protected $bank;
 
-    /**
-     * Format: md
-     *
-     * @var string
-     */
-    protected $period;
-
-    /** @var \DateTimeInterface */
-    protected $payDate;
-
-    /** @var string */
-    protected $authCode;
+    /** @var Company */
+    protected $company;
 
     public function __construct(
-        PayerData $payer,
+        int $id,
+        Company $company,
+        Bank $bank,
         string $period,
         \DateTimeInterface $payDate,
+        float $commission,
+        string $authCode,
+        Payer $payer,
         string $number,
         \DateTimeInterface $billDate,
         float $amount,
         float $debt,
-        string $authCode,
         Meters $meters = null
     ) {
-        $this->period = $period;
-        $this->payDate = $payDate;
-        $this->authCode = $authCode;
+        $this->company = $company;
+        $this->bank = $bank;
 
         parent::__construct(
+            $id,
+            $period,
+            $payDate,
+            $commission,
+            $authCode,
             $payer,
             $number,
             $billDate,
@@ -59,19 +58,18 @@ class InternalBill extends Bill implements \JsonSerializable, PaymentInterface
     public function jsonSerialize(): array
     {
         return array_merge(parent::jsonSerialize(), [
-            'id' => $this->id,
-            'period' => $this->period,
-            'payDate' => Carbon::instance($this->payDate)->toDateString()
+            'company' => $this->company->jsonSerialize(),
+            'bank' => $this->bank->jsonSerialize(),
         ]);
     }
 
-    public function getPeriod(): string
+    public function getBank(): Bank
     {
-        return $this->period;
+        return $this->bank;
     }
 
-    public function getPayDate(): \DateTimeInterface
+    public function getCompany(): Company
     {
-        return $this->payDate;
+        return $this->company;
     }
 }

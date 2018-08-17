@@ -3,7 +3,7 @@
 namespace Wearesho\Bobra\Portmone\Tests\Unit\Notification;
 
 use Wearesho\Bobra\Portmone\Direct\Collections\Payers;
-use Wearesho\Bobra\Portmone\Direct\Entities\PayerData;
+use Wearesho\Bobra\Portmone\Direct\Entities\Payer;
 use Wearesho\Bobra\Portmone\Direct\InternalRequest;
 
 use PHPUnit\Framework\TestCase;
@@ -26,8 +26,8 @@ class SystemRequestTest extends TestCase
         $this->systemRequest = new InternalRequest(
             static::PAYEE,
             new Payers([
-                new PayerData(static::CONTRACT_NUMBER),
-                new PayerData(static::CONTRACT_NUMBER)
+                new Payer(static::CONTRACT_NUMBER),
+                new Payer(static::CONTRACT_NUMBER)
             ])
         );
     }
@@ -58,8 +58,8 @@ class SystemRequestTest extends TestCase
     {
         $this->assertEquals(
             new Payers([
-                new PayerData(static::CONTRACT_NUMBER),
-                new PayerData(static::CONTRACT_NUMBER)
+                new Payer(static::CONTRACT_NUMBER),
+                new Payer(static::CONTRACT_NUMBER)
             ]),
             $this->systemRequest->getPayers()
         );

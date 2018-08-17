@@ -10,13 +10,13 @@ use Wearesho\Bobra\Portmone\NotificationInterface;
  */
 abstract class Payment implements NotificationInterface, \JsonSerializable
 {
-    /** @var Entities\CompanyData */
+    /** @var Entities\Company */
     protected $company;
 
-    /** @var Entities\BankData */
+    /** @var Entities\Bank */
     protected $bank;
 
-    public function __construct(Entities\CompanyData $company, Entities\BankData $bank)
+    public function __construct(Entities\Company $company, Entities\Bank $bank)
     {
         $this->company = $company;
         $this->bank = $bank;
@@ -35,12 +35,12 @@ abstract class Payment implements NotificationInterface, \JsonSerializable
         return $this->company->getCode();
     }
 
-    public function getCompany(): Entities\CompanyData
+    public function getCompany(): Entities\Company
     {
         return $this->company;
     }
 
-    public function getBank(): Entities\BankData
+    public function getBank(): Entities\Bank
     {
         return $this->bank;
     }

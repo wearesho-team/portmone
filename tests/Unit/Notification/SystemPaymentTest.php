@@ -34,7 +34,7 @@ class SystemPaymentTest extends PaymentTestCase
                 static::COMMISSION,
                 static::DEBT,
                 static::AUTH_CODE,
-                new Entities\PayerData(
+                new Entities\Payer(
                     static::PAYER_CONTRACT_NUMBER,
                     static::PAYER_ATTRIBUTES
                 ),
@@ -56,7 +56,7 @@ class SystemPaymentTest extends PaymentTestCase
                 static::COMMISSION,
                 static::DEBT,
                 static::AUTH_CODE,
-                new Entities\PayerData(
+                new Entities\Payer(
                     static::PAYER_CONTRACT_NUMBER,
                     static::PAYER_ATTRIBUTES
                 ),

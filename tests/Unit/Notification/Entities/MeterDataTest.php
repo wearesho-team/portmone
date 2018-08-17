@@ -4,7 +4,7 @@ namespace Wearesho\Bobra\Portmone\Tests\Unit\Notification\Entities;
 
 use PHPUnit\Framework\TestCase;
 
-use Wearesho\Bobra\Portmone\Direct\Entities\MeterData;
+use Wearesho\Bobra\Portmone\Direct\Entities\Meter;
 
 /**
  * Class MeterDataTest
@@ -20,12 +20,12 @@ class MeterDataTest extends TestCase
     protected const TYPE = 'testType';
     protected const AMOUNT = 123.56;
 
-    /** @var MeterData */
+    /** @var Meter */
     protected $meterData;
 
     protected function setUp(): void
     {
-        $this->meterData = new MeterData(
+        $this->meterData = new Meter(
             static::TYPE,
             static::CURRENT_COUNTER,
             static::PREVIOUS_COUNTER,

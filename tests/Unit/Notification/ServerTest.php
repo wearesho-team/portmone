@@ -53,13 +53,13 @@ class ServerTest extends TestCase
         $this->assertEquals('1001', $notification->getPayee());
         $this->assertEquals(
             new Collections\Payers([
-                new Entities\PayerData(
+                new Entities\Payer(
                     '08967563',
                     [
                         'ATTRIBUTE1' => '12082010',
                     ]
                 ),
-                new Entities\PayerData(
+                new Entities\Payer(
                     '03567892',
                     [
                         'ATTRIBUTE1' => '11052009',
@@ -117,11 +117,11 @@ class ServerTest extends TestCase
 
         $this->assertEquals(
             new InternalPaymentNotification(
-                new Entities\CompanyData(
+                new Entities\Company(
                     'ПАТ «Березка»',
                     '1001'
                 ),
-                new Entities\BankData(
+                new Entities\Bank(
                     'АТ "Банк "Фінанси та Кредит"',
                     '300131',
                     '29244020902980'
@@ -136,9 +136,9 @@ class ServerTest extends TestCase
                     0,
                     0,
                     '739280',
-                    new Entities\PayerData('08967563', ['ATTRIBUTE1' => '12082010']),
+                    new Entities\Payer('08967563', ['ATTRIBUTE1' => '12082010']),
                     new Collections\Meters([
-                        new Entities\MeterData(
+                        new Entities\Meter(
                             'testType',
                             '23456',
                             '12345',
@@ -218,11 +218,11 @@ class ServerTest extends TestCase
                     '120985735',
                     138.85
                 ),
-                new Entities\CompanyData(
+                new Entities\Company(
                     'ПАТ «Березка»',
                     '1001'
                 ),
-                new Entities\BankData(
+                new Entities\Bank(
                     'АТ "Банк "Фінанси та Кредит"',
                     '300131',
                     '29244020902980'
@@ -238,7 +238,7 @@ class ServerTest extends TestCase
                         5.00,
                         0,
                         '739280',
-                        new Entities\PayerData(
+                        new Entities\Payer(
                             '08967563',
                             ['ATTRIBUTE1' => '12082010',]
                         ),
@@ -254,7 +254,7 @@ class ServerTest extends TestCase
                         1.00,
                         0,
                         '360157',
-                        new Entities\PayerData(
+                        new Entities\Payer(
                             '08967568',
                             ['ATTRIBUTE1' => '12082011',]
                         ),

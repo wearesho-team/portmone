@@ -4,7 +4,7 @@ namespace Wearesho\Bobra\Portmone\Tests\Unit\Notification\Entities;
 
 use PHPUnit\Framework\TestCase;
 
-use Wearesho\Bobra\Portmone\Direct\Entities\BankData;
+use Wearesho\Bobra\Portmone\Direct\Entities\Bank;
 
 /**
  * Class BankDataTest
@@ -17,12 +17,12 @@ class BankDataTest extends TestCase
     protected const CODE = 'testCode';
     protected const ACCOUNT = 'testAccount';
 
-    /** @var BankData */
+    /** @var Bank */
     protected $bankData;
 
     protected function setUp(): void
     {
-        $this->bankData = new BankData(static::NAME, static::CODE, static::ACCOUNT);
+        $this->bankData = new Bank(static::NAME, static::CODE, static::ACCOUNT);
     }
 
     public function testGetName(): void

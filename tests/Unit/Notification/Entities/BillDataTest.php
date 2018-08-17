@@ -50,9 +50,9 @@ class BillDataTest extends TestCase
             static::COMMISSION,
             static::DEBT,
             static::AUTH_CODE,
-            new Entities\PayerData(static::PAYER_CONTRACT_NUMBER),
+            new Entities\Payer(static::PAYER_CONTRACT_NUMBER),
             new Meters([
-                new Entities\MeterData(
+                new Entities\Meter(
                     static::METER_TYPE,
                     static::METER_CURRENT_COUNTER,
                     static::METER_PREVIOUS_COUNTER,
@@ -172,7 +172,7 @@ class BillDataTest extends TestCase
     public function testGetPayer(): void
     {
         $this->assertEquals(
-            new Entities\PayerData(static::PAYER_CONTRACT_NUMBER),
+            new Entities\Payer(static::PAYER_CONTRACT_NUMBER),
             $this->billData->getPayer()
         );
     }
@@ -181,7 +181,7 @@ class BillDataTest extends TestCase
     {
         $this->assertEquals(
             new Meters([
-                new Entities\MeterData(
+                new Entities\Meter(
                     static::METER_TYPE,
                     static::METER_CURRENT_COUNTER,
                     static::METER_PREVIOUS_COUNTER,

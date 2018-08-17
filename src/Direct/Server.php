@@ -6,10 +6,10 @@ use Carbon\Carbon;
 
 use Wearesho\Bobra\Portmone\Helpers\Convert;
 use Wearesho\Bobra\Portmone\Direct\Collections;
-use Wearesho\Bobra\Portmone\Direct\Entities\BankData;
+use Wearesho\Bobra\Portmone\Direct\Entities\Bank;
 use Wearesho\Bobra\Portmone\Direct\Entities\BillData;
-use Wearesho\Bobra\Portmone\Direct\Entities\CompanyData;
-use Wearesho\Bobra\Portmone\Direct\Entities\PayerData;
+use Wearesho\Bobra\Portmone\Direct\Entities\Company;
+use Wearesho\Bobra\Portmone\Direct\Entities\Payer;
 use Wearesho\Bobra\Portmone\Direct\Entities\PayOrderData;
 use Wearesho\Bobra\Portmone\NotificationInterface;
 
@@ -69,6 +69,11 @@ class Server
         }
     }
 
+    public function formResponse(/* implement responseInterface*/)
+    {
+
+    }
+
     /**
      * @param string $data
      *
@@ -109,29 +114,29 @@ class Server
         );
     }
 
-    private function fetchBankData(\SimpleXMLElement $element): BankData
+    private function fetchBankData(\SimpleXMLElement $element): Bank
     {
-        return new Entities\BankData(
+        return new Entities\Bank(
             (string)$element->{XmlTags::BANK}->{XmlTags::BANK_NAME},
             (string)$element->{XmlTags::BANK}->{XmlTags::BANK_CODE},
             (string)$element->{XmlTags::BANK}->{XmlTags::BANK_ACCOUNT}
         );
     }
 
-    private function fetchCompanyData(\SimpleXMLElement $element): CompanyData
+    private function fetchCompanyData(\SimpleXMLElement $element): Company
     {
-        return new Entities\CompanyData(
+        return new Entities\Company(
             (string)$element->{XmlTags::PAYEE}->{XmlTags::COMPANY_NAME},
             (string)$element->{XmlTags::PAYEE}->{XmlTags::COMPANY_CODE}
         );
     }
 
-    private function fetchPayerData(\SimpleXMLElement $payer): PayerData
+    private function fetchPayerData(\SimpleXMLElement $payer): Payer
     {
         $attributes = (array)$payer->children();
         unset($attributes[XmlTags::CONTRACT_NUMBER]);
 
-        return new PayerData(
+        return new Payer(
             (string)$payer->{XmlTags::CONTRACT_NUMBER},
             $attributes
         );
@@ -144,7 +149,7 @@ class Server
         return new Collections\Meters(
             $meters ?
                 array_map(function (\SimpleXMLElement $meterXml) {
-                    return new Entities\MeterData(
+                    return new Entities\Meter(
                         (string)$meterXml->{XmlTags::ITEM_TYPE},
                         (string)$meterXml->{XmlTags::ITEM_COUNTER},
                         (string)$meterXml->{XmlTags::ITEM_PREV_COUNTER},

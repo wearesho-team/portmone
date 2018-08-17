@@ -3,7 +3,7 @@
 namespace Wearesho\Bobra\Portmone\Direct\Collections;
 
 use Wearesho\Bobra\Portmone\Helpers\BaseCollection;
-use Wearesho\Bobra\Portmone\Direct\Entities\MeterData;
+use Wearesho\Bobra\Portmone\Direct\Entities\Meter;
 
 /**
  * Class Meters
@@ -13,6 +13,6 @@ class Meters extends BaseCollection
 {
     public function type(): string
     {
-        return MeterData::class;
+        return Meter::class;
     }
 }

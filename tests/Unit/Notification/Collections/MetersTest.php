@@ -4,8 +4,8 @@ namespace Wearesho\Bobra\Portmone\Tests\Unit\Notification\Collections;
 
 use Wearesho\Bobra\Portmone\Direct\Collections\Meters;
 use PHPUnit\Framework\TestCase;
-use Wearesho\Bobra\Portmone\Direct\Entities\CompanyData;
-use Wearesho\Bobra\Portmone\Direct\Entities\MeterData;
+use Wearesho\Bobra\Portmone\Direct\Entities\Company;
+use Wearesho\Bobra\Portmone\Direct\Entities\Meter;
 
 /**
  * Class MetersTest
@@ -20,7 +20,7 @@ class MetersTest extends TestCase
     protected function setUp(): void
     {
         $this->meters = new Meters([
-            new MeterData(
+            new Meter(
                 'testType',
                 '321',
                 '123',
@@ -28,7 +28,7 @@ class MetersTest extends TestCase
                 10,
                 10
             ),
-            new MeterData(
+            new Meter(
                 'testType',
                 '456',
                 '654',
@@ -41,16 +41,16 @@ class MetersTest extends TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Element must be instance of Wearesho\Bobra\Portmone\Direct\Entities\MeterData
+     * @expectedExceptionMessage Element must be instance of Wearesho\Bobra\Portmone\Direct\Entities\Meter
      */
     public function testAppendInvalidElement(): void
     {
-        $this->meters->append(new CompanyData('testName', 'testCode'));
+        $this->meters->append(new Company('testName', 'testCode'));
     }
 
     public function testAppendCorrectElement(): void
     {
-        $payer = new MeterData(
+        $payer = new Meter(
             'type',
             '145',
             '098',
@@ -64,16 +64,16 @@ class MetersTest extends TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Element must be instance of Wearesho\Bobra\Portmone\Direct\Entities\MeterData
+     * @expectedExceptionMessage Element must be instance of Wearesho\Bobra\Portmone\Direct\Entities\Meter
      */
     public function testSetInvalidElement(): void
     {
-        $this->meters->offsetSet(0, new CompanyData('testName', 'testCode'));
+        $this->meters->offsetSet(0, new Company('testName', 'testCode'));
     }
 
     public function testSetCorrectElement(): void
     {
-        $payer = new MeterData(
+        $payer = new Meter(
             'test',
             '987',
             '678',
