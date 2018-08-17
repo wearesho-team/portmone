@@ -6,12 +6,12 @@ use Carbon\Carbon;
 
 use PHPUnit\Framework\TestCase;
 
-use Wearesho\Bobra\Portmone\Notification\Collections\Meters;
-use Wearesho\Bobra\Portmone\Notification\Entities;
+use Wearesho\Bobra\Portmone\Direct\Collections\Meters;
+use Wearesho\Bobra\Portmone\Direct\Entities;
 
 /**
  * Class BillDataTest
- * @package Wearesho\Bobra\Portmone\Tests\Unit\Notification\Entities
+ * @package Wearesho\Bobra\Portmone\Tests\Unit\Direct\Entities
  * @internal
  */
 class BillDataTest extends TestCase

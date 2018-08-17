@@ -4,13 +4,13 @@ namespace Wearesho\Bobra\Portmone\Tests\Unit\Notification;
 
 use Carbon\Carbon;
 
-use Wearesho\Bobra\Portmone\Notification\BankPayment;
-use Wearesho\Bobra\Portmone\Notification\Entities;
-use Wearesho\Bobra\Portmone\Notification\Collections;
+use Wearesho\Bobra\Portmone\Direct\BankPayment;
+use Wearesho\Bobra\Portmone\Direct\Entities;
+use Wearesho\Bobra\Portmone\Direct\Collections;
 
 /**
  * Class BankPaymentTest
- * @package Wearesho\Bobra\Portmone\Tests\Unit\Notification
+ * @package Wearesho\Bobra\Portmone\Tests\Unit\Direct
  * @internal
  */
 class BankPaymentTest extends PaymentTestCase

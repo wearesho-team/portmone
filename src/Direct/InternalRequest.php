@@ -1,14 +1,14 @@
 <?php
 
-namespace Wearesho\Bobra\Portmone\Notification;
+namespace Wearesho\Bobra\Portmone\Direct;
 
-use Wearesho\Bobra\Portmone\Notification\Collections\Payers;
-use Wearesho\Bobra\Portmone\Notification\Entities\PayerData;
+use Wearesho\Bobra\Portmone\Direct\Collections\Payers;
+use Wearesho\Bobra\Portmone\Direct\Entities\PayerData;
 use Wearesho\Bobra\Portmone\NotificationInterface;
 
 /**
  * Class SystemRequest
- * @package Wearesho\Bobra\Portmone\Notification
+ * @package Wearesho\Bobra\Portmone\Direct
  */
 class InternalRequest implements \JsonSerializable, NotificationInterface
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace Wearesho\Bobra\Portmone\Notification;
+namespace Wearesho\Bobra\Portmone\Direct;
 
 /**
  * Class InvalidDataException
- * @package Wearesho\Bobra\Portmone\Notification
+ * @package Wearesho\Bobra\Portmone\Direct
  */
 class InvalidDataException extends \Exception
 {

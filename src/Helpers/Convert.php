@@ -8,6 +8,11 @@ namespace Wearesho\Bobra\Portmone\Helpers;
  */
 class Convert
 {
+    /**
+     * @param \SimpleXMLElement $element
+     *
+     * @return \SimpleXMLElement[]
+     */
     public static function simpleXmlToArray(\SimpleXMLElement $element): array
     {
         $items = [];

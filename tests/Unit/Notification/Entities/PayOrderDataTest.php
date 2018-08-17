@@ -6,11 +6,11 @@ use Carbon\Carbon;
 
 use PHPUnit\Framework\TestCase;
 
-use Wearesho\Bobra\Portmone\Notification\Entities\PayOrderData;
+use Wearesho\Bobra\Portmone\Direct\Entities\PayOrderData;
 
 /**
  * Class PayOrderDataTest
- * @package Wearesho\Bobra\Portmone\Tests\Unit\Notification\Entities
+ * @package Wearesho\Bobra\Portmone\Tests\Unit\Direct\Entities
  * @internal
  */
 class PayOrderDataTest extends TestCase

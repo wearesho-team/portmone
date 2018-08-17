@@ -4,18 +4,18 @@ namespace Wearesho\Bobra\Portmone\Tests\Unit\Notification;
 
 use Carbon\Carbon;
 
-use Wearesho\Bobra\Portmone\Notification\BankPayment;
-use Wearesho\Bobra\Portmone\Notification\Collections;
-use Wearesho\Bobra\Portmone\Notification\Entities;
-use Wearesho\Bobra\Portmone\Notification\InternalPayment;
-use Wearesho\Bobra\Portmone\Notification\InternalRequest;
-use Wearesho\Bobra\Portmone\Notification\Server;
+use Wearesho\Bobra\Portmone\Direct\BankPayment;
+use Wearesho\Bobra\Portmone\Direct\Collections;
+use Wearesho\Bobra\Portmone\Direct\Entities;
+use Wearesho\Bobra\Portmone\Direct\InternalPaymentNotification;
+use Wearesho\Bobra\Portmone\Direct\InternalRequest;
+use Wearesho\Bobra\Portmone\Direct\Server;
 
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class ServerTest
- * @package Wearesho\Bobra\Portmone\Tests\Unit\Notification
+ * @package Wearesho\Bobra\Portmone\Tests\Unit\Direct
  *
  * @internal
  */
@@ -112,11 +112,11 @@ class ServerTest extends TestCase
             </BILLS>';
 
         /** @noinspection PhpUnhandledExceptionInspection */
-        /** @var InternalPayment $notification */
+        /** @var InternalPaymentNotification $notification */
         $notification = $this->server->handle($data);
 
         $this->assertEquals(
-            new InternalPayment(
+            new InternalPaymentNotification(
                 new Entities\CompanyData(
                     'ПАТ «Березка»',
                     '1001'
@@ -267,7 +267,7 @@ class ServerTest extends TestCase
     }
 
     /**
-     * @expectedException \Wearesho\Bobra\Portmone\Notification\InvalidDataException
+     * @expectedException \Wearesho\Bobra\Portmone\Direct\InvalidDataException
      * @expectedExceptionMessage Data contain invalid type
      */
     public function testInvalidDataHandle(): void
@@ -277,7 +277,7 @@ class ServerTest extends TestCase
     }
 
     /**
-     * @expectedException \Wearesho\Bobra\Portmone\Notification\InvalidDataException
+     * @expectedException \Wearesho\Bobra\Portmone\Direct\InvalidDataException
      * @expectedExceptionMessage simplexml_load_string(): Entity: line 1: parser error : Start tag expected, '<' not
      *                           found Data contain invalid xml
      */

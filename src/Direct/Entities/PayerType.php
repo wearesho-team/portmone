@@ -1,12 +1,12 @@
 <?php
 
-namespace Wearesho\Bobra\Portmone\Notification\Entities;
+namespace Wearesho\Bobra\Portmone\Direct\Entities;
 
 use MyCLabs\Enum\Enum;
 
 /**
  * Class PayerType
- * @package Wearesho\Bobra\Portmone\Notification\Entities
+ * @package Wearesho\Bobra\Portmone\Direct\Entities
  *
  * @method static static APPROVED()
  * @method static static REJECT()

@@ -6,14 +6,14 @@ use Carbon\Carbon;
 
 use PHPUnit\Framework\TestCase;
 
-use Wearesho\Bobra\Portmone\Notification\Payment;
-use Wearesho\Bobra\Portmone\Notification\PaymentInterface;
-use Wearesho\Bobra\Portmone\Notification\Entities;
-use Wearesho\Bobra\Portmone\Notification\Collections;
+use Wearesho\Bobra\Portmone\Direct\Payment;
+use Wearesho\Bobra\Portmone\Direct\PaymentInterface;
+use Wearesho\Bobra\Portmone\Direct\Entities;
+use Wearesho\Bobra\Portmone\Direct\Collections;
 
 /**
  * Class PaymentTestCase
- * @package Wearesho\Bobra\Portmone\Tests\Unit\Notification
+ * @package Wearesho\Bobra\Portmone\Tests\Unit\Direct
  */
 abstract class PaymentTestCase extends TestCase
 {

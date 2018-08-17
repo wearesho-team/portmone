@@ -1,13 +1,13 @@
 <?php
 
-namespace Wearesho\Bobra\Portmone\Notification\Collections;
+namespace Wearesho\Bobra\Portmone\Direct\Collections;
 
 use Wearesho\Bobra\Portmone\Helpers\BaseCollection;
-use Wearesho\Bobra\Portmone\Notification\Entities\PayerData;
+use Wearesho\Bobra\Portmone\Direct\Entities\PayerData;
 
 /**
  * Class Payers
- * @package Wearesho\Bobra\Portmone\Notification\Collections
+ * @package Wearesho\Bobra\Portmone\Direct\Collections
  */
 class Payers extends BaseCollection
 {

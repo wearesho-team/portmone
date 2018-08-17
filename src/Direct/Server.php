@@ -1,21 +1,21 @@
 <?php
 
-namespace Wearesho\Bobra\Portmone\Notification;
+namespace Wearesho\Bobra\Portmone\Direct;
 
 use Carbon\Carbon;
 
 use Wearesho\Bobra\Portmone\Helpers\Convert;
-use Wearesho\Bobra\Portmone\Notification\Collections;
-use Wearesho\Bobra\Portmone\Notification\Entities\BankData;
-use Wearesho\Bobra\Portmone\Notification\Entities\BillData;
-use Wearesho\Bobra\Portmone\Notification\Entities\CompanyData;
-use Wearesho\Bobra\Portmone\Notification\Entities\PayerData;
-use Wearesho\Bobra\Portmone\Notification\Entities\PayOrderData;
+use Wearesho\Bobra\Portmone\Direct\Collections;
+use Wearesho\Bobra\Portmone\Direct\Entities\BankData;
+use Wearesho\Bobra\Portmone\Direct\Entities\BillData;
+use Wearesho\Bobra\Portmone\Direct\Entities\CompanyData;
+use Wearesho\Bobra\Portmone\Direct\Entities\PayerData;
+use Wearesho\Bobra\Portmone\Direct\Entities\PayOrderData;
 use Wearesho\Bobra\Portmone\NotificationInterface;
 
 /**
  * Class Server
- * @package Wearesho\Bobra\Portmone\Notification
+ * @package Wearesho\Bobra\Portmone\Direct
  */
 class Server
 {
@@ -43,7 +43,7 @@ class Server
             case XmlTags::BILLS:
                 $bill = $xml->{XmlTags::BILL};
 
-                return new InternalPayment(
+                return new InternalPaymentNotification(
                     $this->fetchCompanyData($bill),
                     $this->fetchBankData($bill),
                     $this->fetchBillData($bill)

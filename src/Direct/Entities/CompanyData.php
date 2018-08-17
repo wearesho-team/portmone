@@ -1,10 +1,10 @@
 <?php
 
-namespace Wearesho\Bobra\Portmone\Notification\Entities;
+namespace Wearesho\Bobra\Portmone\Direct\Entities;
 
 /**
  * Class Company
- * @package Wearesho\Bobra\Portmone\Notification\Entities
+ * @package Wearesho\Bobra\Portmone\Direct\Entities
  */
 class CompanyData implements \JsonSerializable
 {

@@ -1,14 +1,14 @@
 <?php
 
-namespace Wearesho\Bobra\Portmone\Notification;
+namespace Wearesho\Bobra\Portmone\Direct;
 
-use Wearesho\Bobra\Portmone\Notification\Entities\BillData;
-use Wearesho\Bobra\Portmone\Notification\Entities\PayOrderData;
+use Wearesho\Bobra\Portmone\Direct\Entities\BillData;
+use Wearesho\Bobra\Portmone\Direct\Entities\PayOrderData;
 use Wearesho\Bobra\Payments;
 
 /**
  * Class BankPayment
- * @package Wearesho\Bobra\Portmone\Notification
+ * @package Wearesho\Bobra\Portmone\Direct
  */
 class BankPayment extends Payment implements Payments\PaymentInterface
 {

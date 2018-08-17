@@ -2,14 +2,14 @@
 
 namespace Wearesho\Bobra\Portmone\Tests\Unit\Notification\Collections;
 
-use Wearesho\Bobra\Portmone\Notification\Collections\Meters;
+use Wearesho\Bobra\Portmone\Direct\Collections\Meters;
 use PHPUnit\Framework\TestCase;
-use Wearesho\Bobra\Portmone\Notification\Entities\CompanyData;
-use Wearesho\Bobra\Portmone\Notification\Entities\MeterData;
+use Wearesho\Bobra\Portmone\Direct\Entities\CompanyData;
+use Wearesho\Bobra\Portmone\Direct\Entities\MeterData;
 
 /**
  * Class MetersTest
- * @package Wearesho\Bobra\Portmone\Tests\Unit\Notification\Collections
+ * @package Wearesho\Bobra\Portmone\Tests\Unit\Direct\Collections
  * @internal
  */
 class MetersTest extends TestCase
@@ -41,7 +41,7 @@ class MetersTest extends TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Element must be instance of Wearesho\Bobra\Portmone\Notification\Entities\MeterData
+     * @expectedExceptionMessage Element must be instance of Wearesho\Bobra\Portmone\Direct\Entities\MeterData
      */
     public function testAppendInvalidElement(): void
     {
@@ -64,7 +64,7 @@ class MetersTest extends TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Element must be instance of Wearesho\Bobra\Portmone\Notification\Entities\MeterData
+     * @expectedExceptionMessage Element must be instance of Wearesho\Bobra\Portmone\Direct\Entities\MeterData
      */
     public function testSetInvalidElement(): void
     {

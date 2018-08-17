@@ -1,12 +1,12 @@
 <?php
 
-namespace Wearesho\Bobra\Portmone\Notification;
+namespace Wearesho\Bobra\Portmone\Direct;
 
 use Wearesho\Bobra\Portmone\NotificationInterface;
 
 /**
  * Class Payment
- * @package Wearesho\Bobra\Portmone\Notification
+ * @package Wearesho\Bobra\Portmone\Direct
  */
 abstract class Payment implements NotificationInterface, \JsonSerializable
 {

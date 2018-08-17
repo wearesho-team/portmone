@@ -1,14 +1,14 @@
 <?php
 
-namespace Wearesho\Bobra\Portmone\Notification\Entities;
+namespace Wearesho\Bobra\Portmone\Direct\Entities;
 
 use Carbon\Carbon;
 
-use Wearesho\Bobra\Portmone\Notification\Collections;
+use Wearesho\Bobra\Portmone\Direct\Collections;
 
 /**
  * Class Bill
- * @package Wearesho\Bobra\Portmone\Notification\Entities
+ * @package Wearesho\Bobra\Portmone\Direct\Entities
  */
 class BillData implements \JsonSerializable
 {

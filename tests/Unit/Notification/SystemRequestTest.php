@@ -2,15 +2,15 @@
 
 namespace Wearesho\Bobra\Portmone\Tests\Unit\Notification;
 
-use Wearesho\Bobra\Portmone\Notification\Collections\Payers;
-use Wearesho\Bobra\Portmone\Notification\Entities\PayerData;
-use Wearesho\Bobra\Portmone\Notification\InternalRequest;
+use Wearesho\Bobra\Portmone\Direct\Collections\Payers;
+use Wearesho\Bobra\Portmone\Direct\Entities\PayerData;
+use Wearesho\Bobra\Portmone\Direct\InternalRequest;
 
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class SystemRequestTest
- * @package Wearesho\Bobra\Portmone\Tests\Unit\Notification
+ * @package Wearesho\Bobra\Portmone\Tests\Unit\Direct
  * @internal
  */
 class SystemRequestTest extends TestCase

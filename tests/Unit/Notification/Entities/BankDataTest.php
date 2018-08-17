@@ -4,11 +4,11 @@ namespace Wearesho\Bobra\Portmone\Tests\Unit\Notification\Entities;
 
 use PHPUnit\Framework\TestCase;
 
-use Wearesho\Bobra\Portmone\Notification\Entities\BankData;
+use Wearesho\Bobra\Portmone\Direct\Entities\BankData;
 
 /**
  * Class BankDataTest
- * @package Wearesho\Bobra\Portmone\Tests\Unit\Notification\Entities
+ * @package Wearesho\Bobra\Portmone\Tests\Unit\Direct\Entities
  * @internal
  */
 class BankDataTest extends TestCase

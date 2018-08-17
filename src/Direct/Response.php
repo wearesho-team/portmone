@@ -1,14 +1,14 @@
 <?php
 
-namespace Wearesho\Bobra\Portmone\Notification;
+namespace Wearesho\Bobra\Portmone\Direct;
 
 use Wearesho\Bobra\Portmone\ConfigInterface;
-use Wearesho\Bobra\Portmone\Notification\Collections\ApprovedPayers;
-use Wearesho\Bobra\Portmone\Notification\Collections\Payers;
+use Wearesho\Bobra\Portmone\Direct\Collections\ApprovedPayers;
+use Wearesho\Bobra\Portmone\Direct\Collections\Payers;
 
 /**
  * Class Response
- * @package Wearesho\Bobra\Portmone\Notification
+ * @package Wearesho\Bobra\Portmone\Direct
  */
 class Response
 {

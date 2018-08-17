@@ -14,13 +14,11 @@ class Config implements ConfigInterface
         string $key,
         string $secret,
         string $payee,
-        string $requestUrl,
         string $language = Language::RU
     ) {
         $this->key = $key;
         $this->secret = $secret;
         $this->payee = $payee;
-        $this->requestUrl = $requestUrl;
 
         $this->validateLanguage($language);
         $this->language = $language;

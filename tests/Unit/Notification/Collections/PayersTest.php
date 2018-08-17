@@ -2,15 +2,15 @@
 
 namespace Wearesho\Bobra\Portmone\Tests\Unit\Notification\Collections;
 
-use Wearesho\Bobra\Portmone\Notification\Collections\Payers;
+use Wearesho\Bobra\Portmone\Direct\Collections\Payers;
 use PHPUnit\Framework\TestCase;
-use Wearesho\Bobra\Portmone\Notification\Entities\CompanyData;
-use Wearesho\Bobra\Portmone\Notification\Entities\MeterData;
-use Wearesho\Bobra\Portmone\Notification\Entities\PayerData;
+use Wearesho\Bobra\Portmone\Direct\Entities\CompanyData;
+use Wearesho\Bobra\Portmone\Direct\Entities\MeterData;
+use Wearesho\Bobra\Portmone\Direct\Entities\PayerData;
 
 /**
  * Class PayersTest
- * @package Wearesho\Bobra\Portmone\Tests\Unit\Notification\Collections
+ * @package Wearesho\Bobra\Portmone\Tests\Unit\Direct\Collections
  * @internal
  */
 class PayersTest extends TestCase
@@ -28,7 +28,7 @@ class PayersTest extends TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Element must be instance of Wearesho\Bobra\Portmone\Notification\Entities\PayerData
+     * @expectedExceptionMessage Element must be instance of Wearesho\Bobra\Portmone\Direct\Entities\PayerData
      */
     public function testAppendInvalidElement(): void
     {
@@ -44,7 +44,7 @@ class PayersTest extends TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Element must be instance of Wearesho\Bobra\Portmone\Notification\Entities\PayerData
+     * @expectedExceptionMessage Element must be instance of Wearesho\Bobra\Portmone\Direct\Entities\PayerData
      */
     public function testSetInvalidElement(): void
     {

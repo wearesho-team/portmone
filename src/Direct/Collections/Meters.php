@@ -1,13 +1,13 @@
 <?php
 
-namespace Wearesho\Bobra\Portmone\Notification\Collections;
+namespace Wearesho\Bobra\Portmone\Direct\Collections;
 
 use Wearesho\Bobra\Portmone\Helpers\BaseCollection;
-use Wearesho\Bobra\Portmone\Notification\Entities\MeterData;
+use Wearesho\Bobra\Portmone\Direct\Entities\MeterData;
 
 /**
  * Class Meters
- * @package Wearesho\Bobra\Portmone\Notification\Collections
+ * @package Wearesho\Bobra\Portmone\Direct\Collections
  */
 class Meters extends BaseCollection
 {
