@@ -2,27 +2,25 @@
 
 namespace Wearesho\Bobra\Portmone\Direct;
 
-use Wearesho\Bobra\Portmone\Direct\Entities\BillData;
-use Wearesho\Bobra\Portmone\Direct\Entities\PayOrderData;
-use Wearesho\Bobra\Payments;
+use Wearesho\Bobra\Portmone\Direct\Entities;
 
 /**
  * Class BankPayment
  * @package Wearesho\Bobra\Portmone\Direct
  */
-class BankPayment extends Payment implements Payments\PaymentInterface
+class BankPayment extends Payment
 {
-    /** @var PayOrderData */
+    /** @var Entities\PayOrder */
     protected $payOrder;
 
-    /** @var Collections\Bills */
+    /** @var Collections\OrderBills */
     protected $bills;
 
     public function __construct(
-        PayOrderData $payOrder,
+        Entities\PayOrder $payOrder,
         Entities\Company $company,
         Entities\Bank $bank,
-        Collections\Bills $bills
+        Collections\OrderBills $bills
     ) {
         $this->payOrder = $payOrder;
         $this->bills = $bills;
@@ -34,14 +32,19 @@ class BankPayment extends Payment implements Payments\PaymentInterface
     {
         return array_merge(parent::jsonSerialize(), [
             'payOrder' => $this->payOrder->jsonSerialize(),
-            'bills' => array_map(function (BillData $bill) {
+            'bills' => array_map(function (Entities\OrderBill $bill) {
                 return $bill->jsonSerialize();
             }, $this->bills->jsonSerialize()),
         ]);
     }
 
-    public function getId(): int
+    public function getPayOrder(): Entities\PayOrder
     {
-        return $this->payOrder->getId();
+        return $this->payOrder;
+    }
+
+    public function getBills(): Collections\OrderBills
+    {
+        return $this->bills;
     }
 }

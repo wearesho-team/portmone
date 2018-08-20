@@ -14,7 +14,6 @@ class ConfigTest extends TestCase
     protected const KEY = 'testKey';
     protected const SECRET = 'testSecret';
     protected const PAYEE = 'testPayee';
-    protected const REQUEST_URL = 'testUrl';
 
     /** @var Portmone\Config */
     protected $config;
@@ -25,8 +24,7 @@ class ConfigTest extends TestCase
         $this->config = new Portmone\Config(
             static::KEY,
             static::SECRET,
-            static::PAYEE,
-            static::REQUEST_URL
+            static::PAYEE
         );
     }
 
@@ -62,11 +60,6 @@ class ConfigTest extends TestCase
         );
     }
 
-    public function testGetRequestUrl(): void
-    {
-        $this->assertEquals(static::REQUEST_URL, $this->config->getRequestUrl());
-    }
-
     /**
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Unsupported language invalidLanguage
@@ -77,7 +70,6 @@ class ConfigTest extends TestCase
             static::KEY,
             static::SECRET,
             static::PAYEE,
-            static::REQUEST_URL,
             'invalidLanguage'
         );
     }

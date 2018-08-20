@@ -4,8 +4,6 @@ namespace Wearesho\Bobra\Portmone\Direct\Entities;
 
 use Carbon\Carbon;
 
-use Wearesho\Bobra\Portmone\Direct\Collections\Meters;
-
 /**
  * Class Bill
  * @package Wearesho\Bobra\Portmone\Direct\Entities
@@ -19,7 +17,7 @@ abstract class Bill implements \JsonSerializable
     protected $number;
 
     /** @var \DateTimeInterface */
-    protected $billDate;
+    protected $setDate;
 
     /** @var float */
     protected $amount;
@@ -27,41 +25,29 @@ abstract class Bill implements \JsonSerializable
     /** @var float */
     protected $debt;
 
-    /** @var Meters|null */
-    protected $meters;
-
     public function __construct(
         Payer $payer,
-        string $number,
+        string $billNumber,
         \DateTimeInterface $billDate,
         float $amount,
-        float $debt,
-        Meters $meters = null
+        float $debt
     ) {
-        $this->number = $number;
-        $this->billDate = $billDate;
+        $this->payer = $payer;
+        $this->number = $billNumber;
+        $this->setDate = $billDate;
         $this->amount = $amount;
         $this->debt = $debt;
-        $this->meters = $meters;
     }
 
     public function jsonSerialize(): array
     {
-        $json = [
+        return [
             'payer' => $this->payer->jsonSerialize(),
             'number' => $this->number,
-            'billDate' => Carbon::parse($this->billDate)->toDateString(),
+            'billDate' => Carbon::parse($this->setDate)->toDateString(),
             'amount' => $this->amount,
             'debt' => $this->debt
         ];
-
-        if ($this->meters) {
-            $json['meters'] = array_map(function (Meter $meter) {
-                return $meter->jsonSerialize();
-            }, $this->meters->jsonSerialize());
-        }
-
-        return $json;
     }
 
     public function getPayer(): Payer
@@ -74,9 +60,9 @@ abstract class Bill implements \JsonSerializable
         return $this->number;
     }
 
-    public function getBillDate(): \DateTimeInterface
+    public function getSetDate(): \DateTimeInterface
     {
-        return $this->billDate;
+        return $this->setDate;
     }
 
     public function getAmount(): float
@@ -87,10 +73,5 @@ abstract class Bill implements \JsonSerializable
     public function getDebt(): float
     {
         return $this->debt;
-    }
-
-    public function getMeters(): ?Meters
-    {
-        return $this->meters;
     }
 }

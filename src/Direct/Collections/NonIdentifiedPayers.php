@@ -2,14 +2,14 @@
 
 namespace Wearesho\Bobra\Portmone\Direct\Collections;
 
+use Wearesho\Bobra\Portmone\Direct\Entities\RejectPayer;
 use Wearesho\Bobra\Portmone\Helpers\BaseCollection;
-use Wearesho\Bobra\Portmone\Direct\Entities\Payer;
 
 /**
- * Class Payers
+ * Class NonIdentifiedPayers
  * @package Wearesho\Bobra\Portmone\Direct\Collections
  */
-class Payers extends BaseCollection
+class NonIdentifiedPayers extends BaseCollection
 {
-    protected const TYPE = Payer::class;
+    protected const TYPE = RejectPayer::class;
 }

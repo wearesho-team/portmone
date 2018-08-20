@@ -2,12 +2,6 @@
 
 namespace Wearesho\Bobra\Portmone\Direct\Entities;
 
-use Carbon\Carbon;
-
-use Wearesho\Bobra\Payments\PaymentInterface;
-use Wearesho\Bobra\Payments\PaymentTrait;
-use Wearesho\Bobra\Portmone\Direct\Collections\Meters;
-
 /**
  * Information of fast Payment in Portmone service
  *
@@ -28,14 +22,13 @@ class InternalBill extends OrderBill implements \JsonSerializable
         Bank $bank,
         string $period,
         \DateTimeInterface $payDate,
-        float $commission,
+        float $payedCommission,
         string $authCode,
         Payer $payer,
         string $number,
-        \DateTimeInterface $billDate,
-        float $amount,
-        float $debt,
-        Meters $meters = null
+        \DateTimeInterface $setDate,
+        float $payedAmount,
+        float $payedDebt
     ) {
         $this->company = $company;
         $this->bank = $bank;
@@ -44,14 +37,13 @@ class InternalBill extends OrderBill implements \JsonSerializable
             $id,
             $period,
             $payDate,
-            $commission,
+            $payedCommission,
             $authCode,
             $payer,
             $number,
-            $billDate,
-            $amount,
-            $debt,
-            $meters
+            $setDate,
+            $payedAmount,
+            $payedDebt
         );
     }
 

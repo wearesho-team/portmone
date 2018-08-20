@@ -3,17 +3,15 @@
 namespace Wearesho\Bobra\Portmone\Direct\Entities;
 
 use Carbon\Carbon;
-use Wearesho\Bobra\Payments\PaymentInterface;
-use Wearesho\Bobra\Payments\PaymentTrait;
-use Wearesho\Bobra\Portmone\Direct\Collections\Meters;
+use Wearesho\Bobra\Payments;
 
 /**
  * Class OrderBill
  * @package Wearesho\Bobra\Portmone\Direct\Entities
  */
-class OrderBill extends Bill implements PaymentInterface
+class OrderBill extends Bill implements Payments\PaymentInterface
 {
-    use PaymentTrait;
+    use Payments\PaymentTrait;
 
     /**
      * Format: md
@@ -39,10 +37,9 @@ class OrderBill extends Bill implements PaymentInterface
         string $authCode,
         Payer $payer,
         string $number,
-        \DateTimeInterface $billDate,
+        \DateTimeInterface $setDate,
         float $amount,
-        float $debt,
-        Meters $meters = null
+        float $debt
     ) {
         $this->id = $id;
         $this->period = $period;
@@ -50,7 +47,7 @@ class OrderBill extends Bill implements PaymentInterface
         $this->commission = $commission;
         $this->authCode = $authCode;
 
-        parent::__construct($payer, $number, $billDate, $amount, $debt, $meters);
+        parent::__construct($payer, $number, $setDate, $amount, $debt);
     }
 
     public function jsonSerialize(): array
