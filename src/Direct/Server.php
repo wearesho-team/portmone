@@ -71,122 +71,120 @@ class Server
     }
 
     /**
-     * @param ResponseInterface $response
+     * @param PayersResponse $response
      *
      * @return string
      */
-    public function formResponse(ResponseInterface $response): string
+    public function formResponse(PayersResponse $response): string
     {
         $document = new \DOMDocument('1.0', 'utf-8');
 
-        if ($response instanceof PayersResponse) {
-            $root = $document->createElement(XmlTags\MessageType::INTERNAL_RESPONSE);
+        $root = $document->createElement(XmlTags\MessageType::INTERNAL_RESPONSE);
 
-            $identifiedPayers = $response->getIdentifiedPayers();
+        $identifiedPayers = $response->getIdentifiedPayers();
 
-            if (!empty($identifiedPayers)) {
-                $billsCollectionRoot = $document->createElement(XmlTags\Bill::ROOT_COLLECTION);
+        if (!empty($identifiedPayers)) {
+            $billsCollectionRoot = $document->createElement(XmlTags\Bill::ROOT_COLLECTION);
 
-                $billsCollectionRoot->appendChild($document->createElement(
-                    XmlTags\Company::ROOT,
-                    $this->config->getPayee()
+            $billsCollectionRoot->appendChild($document->createElement(
+                XmlTags\Company::ROOT,
+                $this->config->getPayee()
+            ));
+            $billsCollectionRoot->appendChild($document->createElement(
+                XmlTags\Bill::PERIOD,
+                $identifiedPayers->getPeriod()
+            ));
+
+            /** @var Entities\IdentifiedPayer $bill */
+            foreach ($identifiedPayers as $bill) {
+                $billRoot = $document->createElement(XmlTags\Bill::ROOT_SINGLE);
+                $payerElement = $document->createElement(XmlTags\Payer::ROOT);
+                $payerElement->appendChild($document->createElement(
+                    XmlTags\Payer::CONTRACT_NUMBER,
+                    $bill->getPayer()->getContractNumber()
                 ));
-                $billsCollectionRoot->appendChild($document->createElement(
-                    XmlTags\Bill::PERIOD,
-                    $identifiedPayers->getPeriod()
-                ));
 
-                /** @var Entities\IdentifiedPayer $bill */
-                foreach ($identifiedPayers as $bill) {
-                    $billRoot = $document->createElement(XmlTags\Bill::ROOT_SINGLE);
-                    $payerElement = $document->createElement(XmlTags\Payer::ROOT);
+                $attributeIndex = 0;
+
+                foreach ($bill->getPayer()->getAttributes() as $attribute) {
                     $payerElement->appendChild($document->createElement(
-                        XmlTags\Payer::CONTRACT_NUMBER,
-                        $bill->getPayer()->getContractNumber()
+                        XmlTags\Payer::ATTRIBUTE . ++$attributeIndex,
+                        $attribute
                     ));
-
-                    $attributeIndex = 0;
-
-                    foreach ($bill->getPayer()->getAttributes() as $attribute) {
-                        $payerElement->appendChild($document->createElement(
-                            XmlTags\Payer::ATTRIBUTE . ++$attributeIndex,
-                            $attribute
-                        ));
-                    }
-
-                    $billRoot->appendChild($payerElement);
-                    $billRoot->appendChild($document->createElement(
-                        XmlTags\Bill::SET_DATE,
-                        Carbon::instance($bill->getSetDate())->toDateString()
-                    ));
-                    $billRoot->appendChild($document->createElement(
-                        XmlTags\Bill::NUMBER,
-                        $bill->getNumber()
-                    ));
-                    $billRoot->appendChild($document->createElement(
-                        XmlTags\Bill::AMOUNT,
-                        $bill->getAmount()
-                    ));
-                    $billRoot->appendChild($document->createElement(
-                        XmlTags\Bill::DEBT,
-                        $bill->getDebt()
-                    ));
-                    $billRoot->appendChild($document->createElement(
-                        XmlTags\Bill::REMARK,
-                        $bill->getRemark()
-                    ));
-
-                    $billsCollectionRoot->appendChild($billRoot);
                 }
 
-                $root->appendChild($billsCollectionRoot);
-            }
-
-            $rejectedPayers = $response->getRejectedPayers();
-
-            if (!empty($rejectedPayers)) {
-                $rejectCollectionRoot = $document->createElement(XmlTags\RejectedPayers::ROOT_COLLECTION);
-                $rejectCollectionRoot->appendChild($document->createElement(
-                    XmlTags\RejectedPayers::PAYEE,
-                    $this->config->getPayee()
+                $billRoot->appendChild($payerElement);
+                $billRoot->appendChild($document->createElement(
+                    XmlTags\Bill::SET_DATE,
+                    Carbon::instance($bill->getSetDate())->toDateString()
+                ));
+                $billRoot->appendChild($document->createElement(
+                    XmlTags\Bill::NUMBER,
+                    $bill->getNumber()
+                ));
+                $billRoot->appendChild($document->createElement(
+                    XmlTags\Bill::AMOUNT,
+                    $bill->getAmount()
+                ));
+                $billRoot->appendChild($document->createElement(
+                    XmlTags\Bill::DEBT,
+                    $bill->getDebt()
+                ));
+                $billRoot->appendChild($document->createElement(
+                    XmlTags\Bill::REMARK,
+                    $bill->getRemark()
                 ));
 
-                /** @var Entities\RejectPayer $payer */
-                foreach ($rejectedPayers as $payer) {
-                    $rejectSingleRoot = $document->createElement(XmlTags\RejectedPayers::ROOT_SINGLE);
-                    $payerRoot = $document->createElement(XmlTags\Payer::ROOT);
-                    $payerRoot->appendChild($document->createElement(
-                        XmlTags\Payer::CONTRACT_NUMBER,
-                        $payer->getContractNumber()
-                    ));
-
-                    $attributeIndex = 0;
-
-                    foreach ($payer->getAttributes() as $attribute) {
-                        $payerRoot->appendChild($document->createElement(
-                            XmlTags\Payer::ATTRIBUTE . ++$attributeIndex,
-                            $attribute
-                        ));
-                    }
-
-                    $rejectSingleRoot->appendChild($payerRoot);
-                    $error = $payer->getError();
-                    $rejectSingleRoot->appendChild($document->createElement(
-                        XmlTags\Error::CODE,
-                        $error->getCode()
-                    ));
-                    $rejectSingleRoot->appendChild($document->createElement(
-                        XmlTags\Error::MESSAGE,
-                        $error->getMessage()
-                    ));
-                    $rejectCollectionRoot->appendChild($rejectSingleRoot);
-                }
-
-                $root->appendChild($rejectCollectionRoot);
+                $billsCollectionRoot->appendChild($billRoot);
             }
 
-            $document->appendChild($root);
+            $root->appendChild($billsCollectionRoot);
         }
+
+        $rejectedPayers = $response->getRejectedPayers();
+
+        if (!empty($rejectedPayers)) {
+            $rejectCollectionRoot = $document->createElement(XmlTags\RejectedPayers::ROOT_COLLECTION);
+            $rejectCollectionRoot->appendChild($document->createElement(
+                XmlTags\RejectedPayers::PAYEE,
+                $this->config->getPayee()
+            ));
+
+            /** @var Entities\RejectPayer $payer */
+            foreach ($rejectedPayers as $payer) {
+                $rejectSingleRoot = $document->createElement(XmlTags\RejectedPayers::ROOT_SINGLE);
+                $payerRoot = $document->createElement(XmlTags\Payer::ROOT);
+                $payerRoot->appendChild($document->createElement(
+                    XmlTags\Payer::CONTRACT_NUMBER,
+                    $payer->getContractNumber()
+                ));
+
+                $attributeIndex = 0;
+
+                foreach ($payer->getAttributes() as $attribute) {
+                    $payerRoot->appendChild($document->createElement(
+                        XmlTags\Payer::ATTRIBUTE . ++$attributeIndex,
+                        $attribute
+                    ));
+                }
+
+                $rejectSingleRoot->appendChild($payerRoot);
+                $error = $payer->getError();
+                $rejectSingleRoot->appendChild($document->createElement(
+                    XmlTags\Error::CODE,
+                    $error->getCode()
+                ));
+                $rejectSingleRoot->appendChild($document->createElement(
+                    XmlTags\Error::MESSAGE,
+                    $error->getMessage()
+                ));
+                $rejectCollectionRoot->appendChild($rejectSingleRoot);
+            }
+
+            $root->appendChild($rejectCollectionRoot);
+        }
+
+        $document->appendChild($root);
 
         return $document->saveXML();
     }
