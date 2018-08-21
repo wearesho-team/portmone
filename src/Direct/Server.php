@@ -5,8 +5,9 @@ namespace Wearesho\Bobra\Portmone\Direct;
 use Carbon\Carbon;
 
 use Wearesho\Bobra\Portmone\ConfigInterface;
-use Wearesho\Bobra\Portmone\Direct\XmlTags\Payer;
-use Wearesho\Bobra\Portmone\Helpers\Convert;
+use Wearesho\Bobra\Portmone\Direct\Entities;
+use Wearesho\Bobra\Portmone\Direct\XmlTags;
+use Wearesho\Bobra\Portmone\Helpers\ConvertXml;
 use Wearesho\Bobra\Portmone\NotificationInterface;
 
 /**
@@ -39,10 +40,10 @@ class Server
         switch ($type) {
             case XmlTags\MessageType::INTERNAL_REQUEST:
                 return new InternalRequest(
-                    Convert::simpleXmlToString($xml, XmlTags\Company::ROOT),
+                    ConvertXml::toString($xml, XmlTags\Company::ROOT),
                     new Collections\Payers(array_map(function (\SimpleXMLElement $payerXml) {
                         return $this->fetchPayer($payerXml);
-                    }, Convert::simpleXmlToArray($xml, XmlTags\Payer::ROOT)))
+                    }, ConvertXml::simpleXmlToArray($xml, XmlTags\Payer::ROOT)))
                 );
             case XmlTags\MessageType::INTERNAL_PAYMENT:
                 $bill = $this->fetchTagContent($xml, XmlTags\Bill::ROOT_SINGLE);
@@ -55,10 +56,10 @@ class Server
 
                 return new BankPayment(
                     new Entities\PayOrder(
-                        Convert::simpleXmlToInt($payOrder, XmlTags\BankNotification::ID),
-                        Convert::simpleXmlToCarbon($payOrder, XmlTags\BankNotification::DATE),
-                        Convert::simpleXmlToString($payOrder, XmlTags\BankNotification::NUMBER),
-                        Convert::simpleXmlToFloat($payOrder, XmlTags\BankNotification::AMOUNT)
+                        ConvertXml::toInt($payOrder, XmlTags\BankNotification::ID),
+                        ConvertXml::toCarbon($payOrder, XmlTags\BankNotification::DATE),
+                        ConvertXml::toString($payOrder, XmlTags\BankNotification::NUMBER),
+                        ConvertXml::toFloat($payOrder, XmlTags\BankNotification::AMOUNT)
                     ),
                     $this->fetchCompany($payOrder),
                     $this->fetchBank($payOrder),
@@ -73,47 +74,118 @@ class Server
      * @param ResponseInterface $response
      *
      * @return string
-     * @todo: finish implement
      */
     public function formResponse(ResponseInterface $response): string
     {
         $document = new \DOMDocument('1.0', 'utf-8');
 
         if ($response instanceof PayersResponse) {
+            $root = $document->createElement(XmlTags\MessageType::INTERNAL_RESPONSE);
+
             $identifiedPayers = $response->getIdentifiedPayers();
 
-            $root = $document->createElement(XmlTags\MessageType::INTERNAL_RESPONSE);
-            $payeeElement = $document->createElement(XmlTags\Company::ROOT, $this->config->getPayee());
-            $periodElement = $document->createElement(XmlTags\Bill::PERIOD, $identifiedPayers->getPeriod());
-            $billsCollectionRoot = $document->createElement(XmlTags\Bill::ROOT_COLLECTION);
+            if (!empty($identifiedPayers)) {
+                $billsCollectionRoot = $document->createElement(XmlTags\Bill::ROOT_COLLECTION);
 
-            /** @var Entities\IdentifiedPayer $identifiedPayer */
-            foreach ($identifiedPayers as $identifiedPayer) {
-                $billRoot = $document->createElement(XmlTags\Bill::ROOT_SINGLE);
-                $payerElement = $document->createElement(XmlTags\Payer::ROOT);
-                $payerElement->appendChild($document->createElement(
-                    XmlTags\Payer::CONTRACT_NUMBER,
-                    $identifiedPayer->getPayer()->getContractNumber()
+                $billsCollectionRoot->appendChild($document->createElement(
+                    XmlTags\Company::ROOT,
+                    $this->config->getPayee()
+                ));
+                $billsCollectionRoot->appendChild($document->createElement(
+                    XmlTags\Bill::PERIOD,
+                    $identifiedPayers->getPeriod()
                 ));
 
-                foreach ($identifiedPayer->getPayer()->getAttributes() as $tag => $attribute) {
-                    $payerElement->appendChild($document->createElement($tag, $attribute));
+                /** @var Entities\IdentifiedPayer $bill */
+                foreach ($identifiedPayers as $bill) {
+                    $billRoot = $document->createElement(XmlTags\Bill::ROOT_SINGLE);
+                    $payerElement = $document->createElement(XmlTags\Payer::ROOT);
+                    $payerElement->appendChild($document->createElement(
+                        XmlTags\Payer::CONTRACT_NUMBER,
+                        $bill->getPayer()->getContractNumber()
+                    ));
+
+                    $attributeIndex = 0;
+
+                    foreach ($bill->getPayer()->getAttributes() as $attribute) {
+                        $payerElement->appendChild($document->createElement(
+                            XmlTags\Payer::ATTRIBUTE . ++$attributeIndex,
+                            $attribute
+                        ));
+                    }
+
+                    $billRoot->appendChild($payerElement);
+                    $billRoot->appendChild($document->createElement(
+                        XmlTags\Bill::SET_DATE,
+                        Carbon::instance($bill->getSetDate())->toDateString()
+                    ));
+                    $billRoot->appendChild($document->createElement(
+                        XmlTags\Bill::NUMBER,
+                        $bill->getNumber()
+                    ));
+                    $billRoot->appendChild($document->createElement(
+                        XmlTags\Bill::AMOUNT,
+                        $bill->getAmount()
+                    ));
+                    $billRoot->appendChild($document->createElement(
+                        XmlTags\Bill::DEBT,
+                        $bill->getDebt()
+                    ));
+                    $billRoot->appendChild($document->createElement(
+                        XmlTags\Bill::REMARK,
+                        $bill->getRemark()
+                    ));
+
+                    $billsCollectionRoot->appendChild($billRoot);
                 }
 
-                $billRoot->appendChild($payerElement);
-                $billRoot->appendChild($document->createElement(
-                    XmlTags\Bill::SET_DATE,
-                    Carbon::instance($identifiedPayer->getSetDate())->toDateString()
-                ));
-                $billRoot->appendChild($document->createElement(
-                    XmlTags\Bill::NUMBER,
-                    $identifiedPayer->getNumber()
-                ));
-                $billRoot->appendChild($document->createElement(
-                    XmlTags\Bill::AMOUNT,
-                    $identifiedPayer->getAmount()
-                ));
+                $root->appendChild($billsCollectionRoot);
             }
+
+            $rejectedPayers = $response->getRejectedPayers();
+
+            if (!empty($rejectedPayers)) {
+                $rejectCollectionRoot = $document->createElement(XmlTags\RejectedPayers::ROOT_COLLECTION);
+                $rejectCollectionRoot->appendChild($document->createElement(
+                    XmlTags\RejectedPayers::PAYEE,
+                    $this->config->getPayee()
+                ));
+
+                /** @var Entities\RejectPayer $payer */
+                foreach ($rejectedPayers as $payer) {
+                    $rejectSingleRoot = $document->createElement(XmlTags\RejectedPayers::ROOT_SINGLE);
+                    $payerRoot = $document->createElement(XmlTags\Payer::ROOT);
+                    $payerRoot->appendChild($document->createElement(
+                        XmlTags\Payer::CONTRACT_NUMBER,
+                        $payer->getContractNumber()
+                    ));
+
+                    $attributeIndex = 0;
+
+                    foreach ($payer->getAttributes() as $attribute) {
+                        $payerRoot->appendChild($document->createElement(
+                            XmlTags\Payer::ATTRIBUTE . ++$attributeIndex,
+                            $attribute
+                        ));
+                    }
+
+                    $rejectSingleRoot->appendChild($payerRoot);
+                    $error = $payer->getError();
+                    $rejectSingleRoot->appendChild($document->createElement(
+                        XmlTags\Error::CODE,
+                        $error->getCode()
+                    ));
+                    $rejectSingleRoot->appendChild($document->createElement(
+                        XmlTags\Error::MESSAGE,
+                        $error->getMessage()
+                    ));
+                    $rejectCollectionRoot->appendChild($rejectSingleRoot);
+                }
+
+                $root->appendChild($rejectCollectionRoot);
+            }
+
+            $document->appendChild($root);
         }
 
         return $document->saveXML();
@@ -187,35 +259,35 @@ class Server
     {
         return new Collections\OrderBills(array_map(function (\SimpleXMLElement $bill) {
             return new Entities\OrderBill(
-                Convert::simpleXmlToInt($bill, XmlTags\Bill::ID),
-                Convert::simpleXmlToString($bill, XmlTags\Bill::PERIOD),
-                Convert::simpleXmlToCarbon($bill, XmlTags\Payment::PAY_DATE),
-                Convert::simpleXmlToFloat($bill, XmlTags\Payment::PAYED_COMMISSION),
-                Convert::simpleXmlToString($bill, XmlTags\Payment::AUTH_CODE),
-                $this->fetchPayer($this->fetchTagContent($bill, Payer::ROOT)),
-                Convert::simpleXmlToString($bill, XmlTags\Bill::NUMBER),
-                Convert::simpleXmlToCarbon($bill, XmlTags\Bill::SET_DATE),
-                Convert::simpleXmlToFloat($bill, XmlTags\Payment::PAYED_AMOUNT),
-                Convert::simpleXmlToFloat($bill, XmlTags\Payment::PAYED_DEBT)
+                ConvertXml::toInt($bill, XmlTags\Bill::ID),
+                ConvertXml::toString($bill, XmlTags\Bill::PERIOD),
+                ConvertXml::toCarbon($bill, XmlTags\Payment::PAY_DATE),
+                ConvertXml::toFloat($bill, XmlTags\Payment::PAYED_COMMISSION),
+                ConvertXml::toString($bill, XmlTags\Payment::AUTH_CODE),
+                $this->fetchPayer($this->fetchTagContent($bill, XmlTags\Payer::ROOT)),
+                ConvertXml::toString($bill, XmlTags\Bill::NUMBER),
+                ConvertXml::toCarbon($bill, XmlTags\Bill::SET_DATE),
+                ConvertXml::toFloat($bill, XmlTags\Payment::PAYED_AMOUNT),
+                ConvertXml::toFloat($bill, XmlTags\Payment::PAYED_DEBT)
             );
-        }, Convert::simpleXmlToArray($element, [XmlTags\Bill::ROOT_COLLECTION, XmlTags\Bill::ROOT_SINGLE])));
+        }, ConvertXml::simpleXmlToArray($element, [XmlTags\Bill::ROOT_COLLECTION, XmlTags\Bill::ROOT_SINGLE])));
     }
 
     private function fetchInternalBill(\SimpleXMLElement $element): Entities\InternalBill
     {
         return new Entities\InternalBill(
-            Convert::simpleXmlToInt($element, XmlTags\Bill::ID),
+            ConvertXml::toInt($element, XmlTags\Bill::ID),
             $this->fetchCompany($element),
             $this->fetchBank($element),
-            Convert::simpleXmlToString($element, XmlTags\Bill::PERIOD),
-            Convert::simpleXmlToCarbon($element, XmlTags\Payment::PAY_DATE),
-            Convert::simpleXmlToFloat($element, XmlTags\Payment::PAYED_COMMISSION),
-            Convert::simpleXmlToString($element, XmlTags\Payment::AUTH_CODE),
-            $this->fetchPayer($this->fetchTagContent($element, Payer::ROOT)),
-            Convert::simpleXmlToString($element, XmlTags\Bill::NUMBER),
-            Convert::simpleXmlToCarbon($element, XmlTags\Bill::SET_DATE),
-            Convert::simpleXmlToFloat($element, XmlTags\Payment::PAYED_AMOUNT),
-            Convert::simpleXmlToFloat($element, XmlTags\Payment::PAYED_DEBT)
+            ConvertXml::toString($element, XmlTags\Bill::PERIOD),
+            ConvertXml::toCarbon($element, XmlTags\Payment::PAY_DATE),
+            ConvertXml::toFloat($element, XmlTags\Payment::PAYED_COMMISSION),
+            ConvertXml::toString($element, XmlTags\Payment::AUTH_CODE),
+            $this->fetchPayer($this->fetchTagContent($element, XmlTags\Payer::ROOT)),
+            ConvertXml::toString($element, XmlTags\Bill::NUMBER),
+            ConvertXml::toCarbon($element, XmlTags\Bill::SET_DATE),
+            ConvertXml::toFloat($element, XmlTags\Payment::PAYED_AMOUNT),
+            ConvertXml::toFloat($element, XmlTags\Payment::PAYED_DEBT)
         );
     }
 
@@ -224,9 +296,9 @@ class Server
         $bankXml = $this->fetchTagContent($element, XmlTags\Bank::ROOT);
 
         return new Entities\Bank(
-            Convert::simpleXmlToString($bankXml, XmlTags\Bank::NAME),
-            Convert::simpleXmlToString($bankXml, XmlTags\Bank::CODE),
-            Convert::simpleXmlToString($bankXml, XmlTags\Bank::ACCOUNT)
+            ConvertXml::toString($bankXml, XmlTags\Bank::NAME),
+            ConvertXml::toString($bankXml, XmlTags\Bank::CODE),
+            ConvertXml::toString($bankXml, XmlTags\Bank::ACCOUNT)
         );
     }
 
@@ -235,15 +307,15 @@ class Server
         $companyXml = $this->fetchTagContent($element, XmlTags\Company::ROOT);
 
         return new Entities\Company(
-            Convert::simpleXmlToString($companyXml, XmlTags\Company::NAME),
-            Convert::simpleXmlToString($companyXml, XmlTags\Company::CODE)
+            ConvertXml::toString($companyXml, XmlTags\Company::NAME),
+            ConvertXml::toString($companyXml, XmlTags\Company::CODE)
         );
     }
 
     private function fetchPayer(\SimpleXMLElement $element): Entities\Payer
     {
-        $contractNumber = Convert::simpleXmlToString($element, XmlTags\Payer::CONTRACT_NUMBER);
-        $attributes = Convert::simpleXmlToArray($element);
+        $contractNumber = ConvertXml::toString($element, XmlTags\Payer::CONTRACT_NUMBER);
+        $attributes = ConvertXml::simpleXmlToArray($element);
         unset($attributes[XmlTags\Payer::CONTRACT_NUMBER]);
 
         return new Entities\Payer(

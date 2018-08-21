@@ -8,7 +8,7 @@ use Wearesho\Bobra\Portmone\Direct\Collections;
  * Class Response
  * @package Wearesho\Bobra\Portmone\Direct
  */
-class PayersResponse
+class PayersResponse implements ResponseInterface
 {
     /** @var Collections\IdentifiedPayers */
     protected $identifiedPayers;

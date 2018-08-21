@@ -3,12 +3,12 @@
 namespace Wearesho\Bobra\Portmone\Direct\XmlTags;
 
 /**
- * Interface NonIdentifiedPayers
+ * Interface RejectedPayers
  * @package Wearesho\Bobra\Portmone\Direct\XmlTags
  */
-interface NonIdentifiedPayers
+interface RejectedPayers
 {
-    public const ROOT = 'REJECTS';
+    public const ROOT_COLLECTION = 'REJECTS';
     public const PAYEE = 'PAYEE';
-    public const PAYERS_ROOT = 'REJECT';
+    public const ROOT_SINGLE = 'REJECT';
 }

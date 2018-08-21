@@ -4,10 +4,10 @@ namespace Wearesho\Bobra\Portmone\Tests\Unit\Direct;
 
 use Carbon\Carbon;
 
+use PHPUnit\Framework\TestCase;
+
 use Wearesho\Bobra\Portmone\Config;
 use Wearesho\Bobra\Portmone\Direct;
-
-use PHPUnit\Framework\TestCase;
 
 /**
  * Class ServerTest
@@ -245,6 +245,74 @@ class ServerTest extends TestCase
                 ])
             ),
             $notification
+        );
+    }
+
+    public function testFormPayersResponse(): void
+    {
+        $payerResponse = new Direct\PayersResponse(
+            new Direct\Collections\IdentifiedPayers(
+                '0110',
+                [
+                    new Direct\Entities\IdentifiedPayer(
+                        new Direct\Entities\Payer('192837465', ['918273645']),
+                        '123456',
+                        Carbon::parse('2018-03-12'),
+                        123.45,
+                        234.56,
+                        'Comment'
+                    ),
+                ]
+            ),
+            new Direct\Collections\RejectedPayers([
+                new Direct\Entities\RejectPayer(
+                    new Direct\Error(Direct\Error::PAYER_NOT_FOUNT, 'Error'),
+                    '321654987',
+                    [
+                        '234567890',
+                        '321654987',
+                        '132465978',
+                        '890567234'
+                    ]
+                )
+            ])
+        );
+        $responseBody = $this->server->formResponse($payerResponse);
+
+        $this->assertXmlStringEqualsXmlString(
+            '<?xml version="1.0" encoding="UTF-8"?>
+            <RESPONSE>
+                <BILLS>
+                    <PAYEE>testPayee</PAYEE>
+                    <BILL_PERIOD>0110</BILL_PERIOD>
+                    <BILL>
+                        <PAYER>
+                            <CONTRACT_NUMBER>192837465</CONTRACT_NUMBER>
+                            <ATTRIBUTE1>918273645</ATTRIBUTE1>
+                        </PAYER>
+                        <BILL_DATE>2018-03-12</BILL_DATE>
+                        <BILL_NUMBER>123456</BILL_NUMBER>
+                        <AMOUNT>123.45</AMOUNT>
+                        <DEBT>234.56</DEBT>
+                        <REMARK>Comment</REMARK>
+                    </BILL>
+                </BILLS>
+                <REJECTS>
+                    <PAYEE>testPayee</PAYEE>
+                    <REJECT>
+                        <PAYER>
+                            <CONTRACT_NUMBER>321654987</CONTRACT_NUMBER>
+                            <ATTRIBUTE1>234567890</ATTRIBUTE1>
+                            <ATTRIBUTE2>321654987</ATTRIBUTE2>
+                            <ATTRIBUTE3>132465978</ATTRIBUTE3>
+                            <ATTRIBUTE4>890567234</ATTRIBUTE4>
+                        </PAYER>
+                        <ERROR_CODE>1</ERROR_CODE>
+                        <ERROR_MESSAGE>Error</ERROR_MESSAGE>
+                    </REJECT>
+                </REJECTS>
+            </RESPONSE>',
+            $responseBody
         );
     }
 

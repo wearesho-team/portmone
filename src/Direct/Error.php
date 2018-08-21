@@ -8,8 +8,12 @@ namespace Wearesho\Bobra\Portmone\Direct;
  */
 class Error
 {
-    public const SYSTEM_ERROR = 0;
-    public const NOTIFICATION_ERROR = 1;
+    public const SYSTEM_ERROR = -2;
+    public const NOTIFICATION_ERROR = -1;
+    
+    public const PAYER_NOT_FOUNT = 1;
+    public const TECH_ERROR = 2;
+    public const PAYER_BLOCKED = 3;
     
     /** @var int */
     protected $code;

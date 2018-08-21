@@ -8,7 +8,7 @@ use Carbon\Carbon;
  * Class Convert
  * @package Wearesho\Bobra\Portmone\Helpers
  */
-class Convert
+class ConvertXml
 {
     /**
      * @param \SimpleXMLElement $element
@@ -25,24 +25,24 @@ class Convert
         return (array)$element;
     }
 
-    public static function simpleXmlToInt(\SimpleXMLElement $element, $tagHierarchy = []): int
+    public static function toInt(\SimpleXMLElement $element, $tagHierarchy = []): int
     {
         return (int)static::fetchSimpleXmlTagContent($element, $tagHierarchy);
     }
 
-    public static function simpleXmlToFloat(\SimpleXMLElement $element, $tagHierarchy = []): float
+    public static function toFloat(\SimpleXMLElement $element, $tagHierarchy = []): float
     {
         return (float)static::fetchSimpleXmlTagContent($element, $tagHierarchy);
     }
 
-    public static function simpleXmlToString(\SimpleXMLElement $element, $tagHierarchy = []): string
+    public static function toString(\SimpleXMLElement $element, $tagHierarchy = []): string
     {
         return (string)static::fetchSimpleXmlTagContent($element, $tagHierarchy);
     }
 
-    public static function simpleXmlToCarbon(\SimpleXMLElement $element, $tagHierarchy = []): Carbon
+    public static function toCarbon(\SimpleXMLElement $element, $tagHierarchy = []): Carbon
     {
-        return Carbon::parse(static::simpleXmlToString(static::fetchSimpleXmlTagContent($element, $tagHierarchy)));
+        return Carbon::parse(static::toString(static::fetchSimpleXmlTagContent($element, $tagHierarchy)));
     }
 
     private static function fetchSimpleXmlTagContent(\SimpleXMLElement $element, $tagHierarchy = []): \SimpleXMLElement
