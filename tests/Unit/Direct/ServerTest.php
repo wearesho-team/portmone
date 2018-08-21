@@ -316,6 +316,52 @@ class ServerTest extends TestCase
         );
     }
 
+    public function testSystemErrorForm(): void
+    {
+        /** @noinspection PhpUnhandledExceptionInspection */
+        $this->assertXmlStringEqualsXmlString(
+            '<?xml version="1.0" encoding="UTF-8"?>
+            <RESPONSE>
+                <SYSTEM_ERROR>
+                    <ERROR_CODE>2</ERROR_CODE> 
+                    <REASON>some reason</REASON> 
+                </SYSTEM_ERROR>
+            </RESPONSE>',
+            $this->server->formError(
+                Direct\Error::SYSTEM_ERROR,
+                new Direct\Error(Direct\Error::TECH_ERROR, 'some reason')
+            )
+        );
+    }
+
+    public function testNotificationErrorForm(): void
+    {
+        /** @noinspection PhpUnhandledExceptionInspection */
+        $this->assertXmlStringEqualsXmlString(
+            '<?xml version="1.0" encoding="UTF-8"?>
+            <RESULT>
+                <ERROR_CODE>4</ERROR_CODE>
+                <REASON>Some unhandled error</REASON>
+                <TRN_ID>200</TRN_ID>
+            </RESULT>',
+            $this->server->formError(
+                Direct\Error::NOTIFICATION_ERROR,
+                new Direct\Error(4, 'Some unhandled error', '200')
+            )
+        );
+    }
+
+    /**
+     * @expectedException \Wearesho\Bobra\Portmone\Direct\InvalidErrorTypeException
+     */
+    public function testInvalidTypeError(): void
+    {
+        $this->server->formError(
+            500,
+            new Direct\Error(4, 'Some unhandled error', '200')
+        );
+    }
+
     /**
      * @expectedException \Wearesho\Bobra\Portmone\Direct\InvalidDataException
      * @expectedExceptionMessage Data contain invalid type

@@ -206,28 +206,38 @@ class Server
             case Error::SYSTEM_ERROR:
                 $root = $document->createElement(XmlTags\MessageType::INTERNAL_RESPONSE);
                 $errorRoot = $document->createElement(XmlTags\Error::SYSTEM_ROOT);
-                $codeElement = $document->createElement(XmlTags\Error::CODE, $error->getCode());
-                $errorRoot->appendChild($codeElement);
-                $messageElement = $document->createElement(XmlTags\Error::REASON, $error->getMessage());
-                $errorRoot->appendChild($errorRoot->appendChild($messageElement));
+                $errorRoot->appendChild($document->createElement(
+                    XmlTags\Error::CODE,
+                    $error->getCode()
+                ));
+                $errorRoot->appendChild($document->createElement(
+                    XmlTags\Error::REASON,
+                    $error->getMessage()
+                ));
                 $root->appendChild($errorRoot);
-                $document->appendChild($root);
 
                 break;
             case Error::NOTIFICATION_ERROR:
                 $root = $document->createElement(XmlTags\Error::NOTIFICATION_ROOT);
-                $codeElement = $document->createElement(XmlTags\Error::CODE, $error->getCode());
-                $messageElement = $document->createElement(XmlTags\Error::REASON, $error->getMessage());
-                $documentIdElement = $document->createElement(XmlTags\Error::DOCUMENT_ID, $error->getDocumentId());
-                $root->appendChild($codeElement);
-                $root->appendChild($messageElement);
-                $root->appendChild($documentIdElement);
-                $document->appendChild($root);
+                $root->appendChild($document->createElement(
+                    XmlTags\Error::CODE,
+                    $error->getCode()
+                ));
+                $root->appendChild($document->createElement(
+                    XmlTags\Error::REASON,
+                    $error->getMessage()
+                ));
+                $root->appendChild($document->createElement(
+                    XmlTags\Error::DOCUMENT_ID,
+                    $error->getDocumentId()
+                ));
 
                 break;
             default:
                 throw new InvalidErrorTypeException($errorType, $error);
         }
+
+        $document->appendChild($root);
 
         return $document->saveXML();
     }
