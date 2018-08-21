@@ -6,10 +6,10 @@ use Wearesho\Bobra\Portmone\Direct\Entities\RejectPayer;
 use Wearesho\Bobra\Portmone\Helpers\BaseCollection;
 
 /**
- * Class NonIdentifiedPayers
+ * Class RejectedPayers
  * @package Wearesho\Bobra\Portmone\Direct\Collections
  */
-class NonIdentifiedPayers extends BaseCollection
+class RejectedPayers extends BaseCollection
 {
     protected const TYPE = RejectPayer::class;
 }

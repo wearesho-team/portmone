@@ -3,7 +3,6 @@
 namespace Wearesho\Bobra\Portmone\Direct;
 
 use Wearesho\Bobra\Portmone\Direct\Collections;
-use Wearesho\Bobra\Portmone\Direct\XmlTags\NonIdentifiedPayers;
 
 /**
  * Class Response
@@ -14,12 +13,12 @@ class PayersResponse
     /** @var Collections\IdentifiedPayers */
     protected $identifiedPayers;
 
-    /** @var Collections\IdentifiedPayers */
+    /** @var Collections\RejectedPayers */
     protected $rejectedPayers;
 
     public function __construct(
         Collections\IdentifiedPayers $identifiedPayers,
-        NonIdentifiedPayers $rejectedPayers
+        Collections\RejectedPayers $rejectedPayers
     ) {
         $this->identifiedPayers = $identifiedPayers;
         $this->rejectedPayers = $rejectedPayers;
@@ -30,7 +29,7 @@ class PayersResponse
         return $this->identifiedPayers;
     }
 
-    public function getRejectedPayers(): Collections\IdentifiedPayers
+    public function getRejectedPayers(): Collections\RejectedPayers
     {
         return $this->rejectedPayers;
     }
