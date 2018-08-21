@@ -3,7 +3,7 @@
 namespace Wearesho\Bobra\Portmone\Direct\XmlTags;
 
 /**
- * Interface Error
+ * Interface Message
  * @package Wearesho\Bobra\Portmone\Direct\XmlTags
  */
 interface Error

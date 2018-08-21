@@ -2,7 +2,7 @@
 
 namespace Wearesho\Bobra\Portmone\Direct\Entities;
 
-use Wearesho\Bobra\Portmone\Direct\Error;
+use Wearesho\Bobra\Portmone\Direct\Message;
 
 /**
  * Class RejectPayer
@@ -10,17 +10,17 @@ use Wearesho\Bobra\Portmone\Direct\Error;
  */
 class RejectPayer extends Payer
 {
-    /** @var Error */
+    /** @var Message */
     protected $error;
 
-    public function __construct(Error $error, string $contractNumber, array $attributes = [])
+    public function __construct(Message $error, string $contractNumber, array $attributes = [])
     {
         $this->error = $error;
 
         parent::__construct($contractNumber, $attributes);
     }
 
-    public function getError(): Error
+    public function getError(): Message
     {
         return $this->error;
     }

@@ -3,14 +3,17 @@
 namespace Wearesho\Bobra\Portmone\Direct;
 
 /**
- * Class ServerError
+ * Class Message
  * @package Wearesho\Bobra\Portmone\Direct
  */
-class Error
+class Message
 {
     public const SYSTEM_ERROR = -2;
     public const NOTIFICATION_ERROR = -1;
-    
+    public const RESULT = -1;
+
+    public const NO_ERROR = 0;
+
     public const PAYER_NOT_FOUNT = 1;
     public const TECH_ERROR = 2;
     public const PAYER_BLOCKED = 3;

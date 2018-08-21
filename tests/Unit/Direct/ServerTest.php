@@ -266,7 +266,7 @@ class ServerTest extends TestCase
             ),
             new Direct\Collections\RejectedPayers([
                 new Direct\Entities\RejectPayer(
-                    new Direct\Error(Direct\Error::PAYER_NOT_FOUNT, 'Error'),
+                    new Direct\Message(Direct\Message::PAYER_NOT_FOUNT, 'Message'),
                     '321654987',
                     [
                         '234567890',
@@ -277,7 +277,7 @@ class ServerTest extends TestCase
                 )
             ])
         );
-        $responseBody = $this->server->formResponse($payerResponse);
+        $responseBody = $this->server->getBodyPayersResponse($payerResponse);
 
         $this->assertXmlStringEqualsXmlString(
             '<?xml version="1.0" encoding="UTF-8"?>
@@ -308,7 +308,7 @@ class ServerTest extends TestCase
                             <ATTRIBUTE4>890567234</ATTRIBUTE4>
                         </PAYER>
                         <ERROR_CODE>1</ERROR_CODE>
-                        <ERROR_MESSAGE>Error</ERROR_MESSAGE>
+                        <ERROR_MESSAGE>Message</ERROR_MESSAGE>
                     </REJECT>
                 </REJECTS>
             </RESPONSE>',
@@ -327,9 +327,9 @@ class ServerTest extends TestCase
                     <REASON>some reason</REASON> 
                 </SYSTEM_ERROR>
             </RESPONSE>',
-            $this->server->formError(
-                Direct\Error::SYSTEM_ERROR,
-                new Direct\Error(Direct\Error::TECH_ERROR, 'some reason')
+            $this->server->getBodyMessage(
+                Direct\Message::SYSTEM_ERROR,
+                new Direct\Message(Direct\Message::TECH_ERROR, 'some reason')
             )
         );
     }
@@ -344,10 +344,24 @@ class ServerTest extends TestCase
                 <REASON>Some unhandled error</REASON>
                 <TRN_ID>200</TRN_ID>
             </RESULT>',
-            $this->server->formError(
-                Direct\Error::NOTIFICATION_ERROR,
-                new Direct\Error(4, 'Some unhandled error', '200')
+            $this->server->getBodyMessage(
+                Direct\Message::NOTIFICATION_ERROR,
+                new Direct\Message(4, 'Some unhandled error', '200')
             )
+        );
+    }
+
+    public function testSimpleNotificationResponse(): void
+    {
+        /** @noinspection PhpUnhandledExceptionInspection */
+        $this->assertXmlStringEqualsXmlString(
+            '<?xml version="1.0" encoding="UTF-8"?>
+            <RESULT>
+                <ERROR_CODE>0</ERROR_CODE>
+                <REASON>OK</REASON>
+                <TRN_ID>123456</TRN_ID>
+            </RESULT>',
+            $this->server->getBodyNotificationResponse('123456')
         );
     }
 
@@ -356,9 +370,9 @@ class ServerTest extends TestCase
      */
     public function testInvalidTypeError(): void
     {
-        $this->server->formError(
+        $this->server->getBodyMessage(
             500,
-            new Direct\Error(4, 'Some unhandled error', '200')
+            new Direct\Message(4, 'Some unhandled error', '200')
         );
     }
 

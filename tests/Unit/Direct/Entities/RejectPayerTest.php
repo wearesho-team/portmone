@@ -5,7 +5,7 @@ namespace Wearesho\Bobra\Portmone\Tests\Unit\Direct\Entities;
 use PHPUnit\Framework\TestCase;
 
 use Wearesho\Bobra\Portmone\Direct\Entities\RejectPayer;
-use Wearesho\Bobra\Portmone\Direct\Error;
+use Wearesho\Bobra\Portmone\Direct\Message;
 
 /**
  * Class RejectPayerTest
@@ -25,7 +25,7 @@ class RejectPayerTest extends TestCase
     protected function setUp(): void
     {
         $this->fakeRejectPayer = new RejectPayer(
-            new Error(static::ERROR_CODE, static::ERROR_MESSAGE),
+            new Message(static::ERROR_CODE, static::ERROR_MESSAGE),
             static::CONTRACT_NUMBER
         );
     }
@@ -33,7 +33,7 @@ class RejectPayerTest extends TestCase
     public function testGetError(): void
     {
         $this->assertEquals(
-            new Error(static::ERROR_CODE, static::ERROR_MESSAGE),
+            new Message(static::ERROR_CODE, static::ERROR_MESSAGE),
             $this->fakeRejectPayer->getError()
         );
     }

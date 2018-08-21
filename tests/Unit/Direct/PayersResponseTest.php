@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 use Wearesho\Bobra\Portmone\Direct\Collections;
 use Wearesho\Bobra\Portmone\Direct\Entities;
-use Wearesho\Bobra\Portmone\Direct\Error;
+use Wearesho\Bobra\Portmone\Direct\Message;
 use Wearesho\Bobra\Portmone\Direct\PayersResponse;
 
 /**
@@ -51,7 +51,7 @@ class PayersResponseTest extends TestCase
             ),
             new Collections\RejectedPayers([
                 new Entities\RejectPayer(
-                    new Error(static::ERROR_CODE, static::ERROR_MESSAGE),
+                    new Message(static::ERROR_CODE, static::ERROR_MESSAGE),
                     static::NON_IDENTIFIED_CONTRACT_NUMBER
                 )
             ])
@@ -63,7 +63,7 @@ class PayersResponseTest extends TestCase
         $this->assertEquals(
             new Collections\RejectedPayers([
                 new Entities\RejectPayer(
-                    new Error(static::ERROR_CODE, static::ERROR_MESSAGE),
+                    new Message(static::ERROR_CODE, static::ERROR_MESSAGE),
                     static::NON_IDENTIFIED_CONTRACT_NUMBER
                 )
             ]),

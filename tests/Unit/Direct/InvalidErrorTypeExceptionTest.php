@@ -4,7 +4,7 @@ namespace Wearesho\Bobra\Portmone\Tests\Unit\Direct;
 
 use PHPUnit\Framework\TestCase;
 
-use Wearesho\Bobra\Portmone\Direct\Error;
+use Wearesho\Bobra\Portmone\Direct\Message;
 use Wearesho\Bobra\Portmone\Direct\InvalidErrorTypeException;
 
 /**
@@ -26,7 +26,7 @@ class InvalidErrorTypeExceptionTest extends TestCase
     {
         $this->fakeException = new InvalidErrorTypeException(
             static::INVALID_ERROR_TYPE,
-            new Error(static::ERROR_CODE, static::ERROR_MESSAGE)
+            new Message(static::ERROR_CODE, static::ERROR_MESSAGE)
         );
     }
 
@@ -41,7 +41,7 @@ class InvalidErrorTypeExceptionTest extends TestCase
     public function testGetErrorContent(): void
     {
         $this->assertEquals(
-            new Error(static::ERROR_CODE, static::ERROR_MESSAGE),
+            new Message(static::ERROR_CODE, static::ERROR_MESSAGE),
             $this->fakeException->getErrorContent()
         );
     }

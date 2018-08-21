@@ -11,12 +11,12 @@ class InvalidErrorTypeException extends \Exception
     /** @var int */
     protected $errorType;
 
-    /** @var Error */
+    /** @var Message */
     protected $errorContent;
 
     public function __construct(
         int $errorType,
-        Error $errorContent,
+        Message $errorContent,
         string $message = "",
         int $code = 0,
         \Throwable $previous = null
@@ -32,7 +32,7 @@ class InvalidErrorTypeException extends \Exception
         return $this->errorType;
     }
 
-    public function getErrorContent(): Error
+    public function getErrorContent(): Message
     {
         return $this->errorContent;
     }

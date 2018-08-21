@@ -4,11 +4,13 @@ namespace Wearesho\Bobra\Portmone\Direct;
 
 use Carbon\Carbon;
 
+use PHPUnit\Framework\Error\Error;
 use Wearesho\Bobra\Portmone\ConfigInterface;
 use Wearesho\Bobra\Portmone\Direct\Entities;
 use Wearesho\Bobra\Portmone\Direct\XmlTags;
 use Wearesho\Bobra\Portmone\Helpers\ConvertXml;
 use Wearesho\Bobra\Portmone\NotificationInterface;
+use Wearesho\Bobra\Portmone\Tests\Unit\Direct\ErrorTest;
 
 /**
  * Class Server
@@ -16,6 +18,8 @@ use Wearesho\Bobra\Portmone\NotificationInterface;
  */
 class Server
 {
+    private const OK = 'OK';
+
     /** @var ConfigInterface */
     protected $config;
 
@@ -75,7 +79,7 @@ class Server
      *
      * @return string
      */
-    public function formResponse(PayersResponse $response): string
+    public function getBodyPayersResponse(PayersResponse $response): string
     {
         $document = new \DOMDocument('1.0', 'utf-8');
 
@@ -190,18 +194,32 @@ class Server
     }
 
     /**
-     * @param int   $errorType
-     * @param Error $error
+     * @param string $documentId
      *
      * @return string
      * @throws InvalidErrorTypeException
      */
-    public function formError(int $errorType, Error $error): string
+    public function getBodyNotificationResponse(string $documentId): string
+    {
+        return $this->getBodyMessage(
+            Message::RESULT,
+            new Message(Message::NO_ERROR, static::OK, $documentId)
+        );
+    }
+
+    /**
+     * @param int     $messageType
+     * @param Message $error
+     *
+     * @return string
+     * @throws InvalidErrorTypeException
+     */
+    public function getBodyMessage(int $messageType, Message $error): string
     {
         $document = new \DOMDocument('1.0', 'utf-8');
 
-        switch ($errorType) {
-            case Error::SYSTEM_ERROR:
+        switch ($messageType) {
+            case Message::SYSTEM_ERROR:
                 $root = $document->createElement(XmlTags\MessageType::INTERNAL_RESPONSE);
                 $errorRoot = $document->createElement(XmlTags\Error::SYSTEM_ROOT);
                 $errorRoot->appendChild($document->createElement(
@@ -215,7 +233,7 @@ class Server
                 $root->appendChild($errorRoot);
 
                 break;
-            case Error::NOTIFICATION_ERROR:
+            case Message::NOTIFICATION_ERROR:
                 $root = $document->createElement(XmlTags\Error::NOTIFICATION_ROOT);
                 $root->appendChild($document->createElement(
                     XmlTags\Error::CODE,
@@ -232,7 +250,7 @@ class Server
 
                 break;
             default:
-                throw new InvalidErrorTypeException($errorType, $error);
+                throw new InvalidErrorTypeException($messageType, $error);
         }
 
         $document->appendChild($root);

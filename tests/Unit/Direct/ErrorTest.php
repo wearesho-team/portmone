@@ -4,12 +4,12 @@ namespace Wearesho\Bobra\Portmone\Tests\Unit\Direct;
 
 use PHPUnit\Framework\TestCase;
 
-use Wearesho\Bobra\Portmone\Direct\Error;
+use Wearesho\Bobra\Portmone\Direct\Message;
 
 /**
  * Class ErrorTest
  * @package Wearesho\Bobra\Portmone\Tests\Unit\Direct
- * @coversDefaultClass Error
+ * @coversDefaultClass Message
  * @internal
  */
 class ErrorTest extends TestCase
@@ -18,12 +18,12 @@ class ErrorTest extends TestCase
     protected const MESSAGE = 'message';
     protected const DOCUMENT_ID = '123456';
 
-    /** @var Error */
+    /** @var Message */
     protected $fakeError;
 
     protected function setUp(): void
     {
-        $this->fakeError = new Error(
+        $this->fakeError = new Message(
             static::CODE,
             static::MESSAGE,
             static::DOCUMENT_ID
