@@ -5,10 +5,10 @@ namespace Wearesho\Bobra\Portmone\Credit;
 use Wearesho\Bobra\Payments\Credit;
 
 /**
- * Class Response
+ * Class Payment
  * @package Wearesho\Bobra\Portmone\Credit
  */
-class Response implements Credit\Response
+class Payment implements Credit\Response
 {
     /** @var string */
     protected $billId;
@@ -23,7 +23,7 @@ class Response implements Credit\Response
     protected $status;
 
     /**
-     * Response constructor.
+     * Payment constructor.
      *
      * @param string             $billId
      * @param \DateTimeInterface $payedDate

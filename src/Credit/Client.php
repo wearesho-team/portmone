@@ -77,7 +77,9 @@ class Client
 
         $this->validateTransfer($creditToCard, $response);
 
-        $document = simplexml_load_string($response->getBody()->__toString());
+        $document = simplexml_load_string(
+            $response->getBody()->__toString()
+        );
 
         $response = $this->guzzleClient->request('post', $this->config->getUrl(), [
             'login' => $this->config->getKey(),
@@ -89,9 +91,11 @@ class Client
 
         $this->validateTransfer($creditToCard, $response);
 
-        $response = simplexml_load_string($response->getBody()->__toString())->{static::TAG_BILL};
+        $response = simplexml_load_string(
+            $response->getBody()->__toString()
+        )->{static::TAG_BILL};
 
-        return new Response(
+        return new Payment(
             $response->attributes()[static::ATTRIBUTE_ID],
             Carbon::createFromFormat('d.m.Y H:i:s', (string)$response->{static::TAG_PAY_DATE}),
             (float)$response->{static::TAG_PAY_AMOUNT},
@@ -108,7 +112,8 @@ class Client
     {
         $card = $creditToCard->getCardToken();
 
-        if (!preg_match('/\d{16}/', $card) && !$this->luhn->isValid(LuhnAlgorithm\Number::fromString($card))) {
+        if (!preg_match('/\d{16}/', $card)
+            && !$this->luhn->isValid(LuhnAlgorithm\Number::fromString($card))) {
             throw new Credit\Exception($creditToCard, "Invalid card number");
         }
     }
@@ -146,7 +151,12 @@ class Client
                 throw new \Exception("Invalid xml document.\nBODY: " . $responseBody);
             }
         } catch (\Throwable $exception) {
-            throw new Credit\Exception($creditToCard, $exception->getMessage(), $exception->getCode(), $exception);
+            throw new Credit\Exception(
+                $creditToCard,
+                $exception->getMessage(),
+                $exception->getCode(),
+                $exception
+            );
         }
 
         $responseStatus = $responseXml->attributes()[static::ATTRIBUTE_STATUS];
@@ -161,6 +171,10 @@ class Client
             );
         }
 
-        $this->validatePayee($responseXml->{static::TAG_BILL}->{static::TAG_PAYEE}->attributes()[static::ATTRIBUTE_ID]);
+        $this->validatePayee(
+            $responseXml->{static::TAG_BILL}
+            ->{static::TAG_PAYEE}
+            ->attributes()[static::ATTRIBUTE_ID]
+        );
     }
 }

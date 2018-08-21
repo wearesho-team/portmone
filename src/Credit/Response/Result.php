@@ -4,7 +4,7 @@ namespace Wearesho\Bobra\Portmone\Credit\Response;
 
 /**
  * Interface Result
- * @package Wearesho\Bobra\Portmone\Credit\Response
+ * @package Wearesho\Bobra\Portmone\Credit\Payment
  */
 interface Result
 {

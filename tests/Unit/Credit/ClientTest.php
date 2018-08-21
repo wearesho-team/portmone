@@ -135,7 +135,7 @@ class ClientTest extends TestCase
         $this->fakeClient = new Credit\Client($this->fakeConfig, $client);
 
         /** @noinspection PhpUnhandledExceptionInspection */
-        /** @var Credit\Response $response */
+        /** @var Credit\Payment $response */
         $response = $this->fakeClient->send(new Transfer(
             123456,
             1200.45,
