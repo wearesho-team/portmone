@@ -44,12 +44,6 @@ class Client
     /** @var LuhnAlgorithm\Contract\LuhnAlgorithmInterface */
     protected $luhn;
 
-    /**
-     * Client constructor.
-     *
-     * @param Config            $config
-     * @param GuzzleHttp\Client $guzzleClient
-     */
     public function __construct(Config $config, GuzzleHttp\Client $guzzleClient)
     {
         $this->config = $config;
@@ -76,11 +70,7 @@ class Client
             'contractNumber' => $creditToCard->getCardToken()
         ]);
 
-        $this->validateTransfer($creditToCard, $response);
-
-        $document = simplexml_load_string(
-            $response->getBody()->__toString()
-        );
+        $document = $this->fetchResponseDocument($creditToCard, $response);
 
         $response = $this->guzzleClient->request('post', $this->config->getUrl(), [
             'login' => $this->config->getKey(),
@@ -90,17 +80,14 @@ class Client
             'amount' => $creditToCard->getAmount()
         ]);
 
-        $this->validateTransfer($creditToCard, $response);
-
-        $response = simplexml_load_string(
-            $response->getBody()->__toString()
-        )->{static::TAG_BILL};
+        $response = $this->fetchResponseDocument($creditToCard, $response);
+        $bill = $response->{static::TAG_BILL};
 
         return new Payment(
-            $response->attributes()[static::ATTRIBUTE_ID],
-            Carbon::createFromFormat('d.m.Y H:i:s', (string)$response->{static::TAG_PAY_DATE}),
-            (float)$response->{static::TAG_PAY_AMOUNT},
-            (string)$response->{static::TAG_STATUS}
+            $bill->attributes()[static::ATTRIBUTE_ID],
+            Carbon::createFromFormat('d.m.Y H:i:s', (string)$bill->{static::TAG_PAY_DATE}),
+            (float)$bill->{static::TAG_PAY_AMOUNT},
+            (string)$bill->{static::TAG_STATUS}
         );
     }
 
@@ -113,7 +100,7 @@ class Client
     {
         $card = $creditToCard->getCardToken();
 
-        if (!preg_match('/\d{16}/', $card)
+        if (!preg_match('/^\d{16}$/', $card)
             && !$this->luhn->isValid(LuhnAlgorithm\Number::fromString($card))) {
             throw new Credit\Exception($creditToCard, "Invalid card number");
         }
@@ -135,26 +122,23 @@ class Client
      * @param Credit\TransferInterface $creditToCard
      * @param ResponseInterface        $response
      *
+     * @return \SimpleXMLElement
      * @throws BillException
      * @throws Credit\Exception
      * @throws \Exception
      */
-    protected function validateTransfer(
+    protected function fetchResponseDocument(
         Credit\TransferInterface $creditToCard,
         ResponseInterface $response
-    ): void {
+    ): \SimpleXMLElement {
         $responseBody = $response->getBody()->__toString();
 
         try {
             $responseXml = simplexml_load_string($responseBody);
-
-            if ($responseXml === false) {
-                throw new \Exception("Invalid xml document.\nBODY: " . $responseBody);
-            }
-        } catch (\Throwable $exception) {
+        } catch (\Exception $exception) {
             throw new Credit\Exception(
                 $creditToCard,
-                $exception->getMessage(),
+                "Invalid xml document.\nBODY: " . $responseBody,
                 $exception->getCode(),
                 $exception
             );
@@ -177,5 +161,7 @@ class Client
             ->{static::TAG_PAYEE}
             ->attributes()[static::ATTRIBUTE_ID]
         );
+
+        return $responseXml;
     }
 }

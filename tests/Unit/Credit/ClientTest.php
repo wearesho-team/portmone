@@ -3,10 +3,12 @@
 namespace Wearesho\Bobra\Portmone\Tests\Unit\Credit;
 
 use Carbon\Carbon;
+
 use GuzzleHttp;
 
 use PHPUnit\Framework\TestCase;
 
+use Wearesho\Bobra\Payments\Credit\Exception;
 use Wearesho\Bobra\Payments\Credit\Transfer;
 use Wearesho\Bobra\Portmone\Config;
 use Wearesho\Bobra\Portmone\Credit;
@@ -60,13 +62,13 @@ class ClientTest extends TestCase
     }
 
     /**
-     * @expectedException \Wearesho\Bobra\Payments\Credit\Exception
-     * @expectedExceptionMessage simplexml_load_string(): Entity: line 1: parser error : Start tag expected, '<' not
-     *                           found
+     * @expectedException Exception
+     * @expectedExceptionMessage Invalid xml document.
+    BODY: <?xml version="1.0" encoding="utf-8"?>
      */
     public function testHandleInvalidXml(): void
     {
-        $body = 'invalid xml';
+        $body = '<?xml version="1.0" encoding="utf-8"?>';
         $mock = new GuzzleHttp\Handler\MockHandler([
             new GuzzleHttp\Psr7\Response(200, [], $body),
         ]);
@@ -164,7 +166,7 @@ class ClientTest extends TestCase
      * @expectedException \Wearesho\Bobra\Payments\Credit\Exception
      * @expectedExceptionMessage Invalid card number
      */
-    public function testInvalidCardToken(): void
+    public function testInvalidCardNumberLength(): void
     {
         $this->fakeClient = new Credit\Client($this->fakeConfig, new GuzzleHttp\Client());
         /** @noinspection PhpUnhandledExceptionInspection */
@@ -172,6 +174,21 @@ class ClientTest extends TestCase
             123456,
             1200.45,
             '123'
+        ));
+    }
+
+    /**
+     * @expectedException \Wearesho\Bobra\Payments\Credit\Exception
+     * @expectedExceptionMessage Invalid card number
+     */
+    public function testInvalidCardNumberWithExcessSymbols(): void
+    {
+        $this->fakeClient = new Credit\Client($this->fakeConfig, new GuzzleHttp\Client());
+        /** @noinspection PhpUnhandledExceptionInspection */
+        $this->fakeClient->send(new Transfer(
+            123456,
+            1200.45,
+            'a1234123412341234b'
         ));
     }
 }

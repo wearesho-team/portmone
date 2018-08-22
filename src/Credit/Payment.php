@@ -22,14 +22,6 @@ class Payment implements Payments\Credit\Response
     /** @var string */
     protected $status;
 
-    /**
-     * Payment constructor.
-     *
-     * @param string             $billId
-     * @param \DateTimeInterface $payedDate
-     * @param float              $payedAmount
-     * @param string             $status
-     */
     public function __construct(string $billId, \DateTimeInterface $payedDate, float $payedAmount, string $status)
     {
         $this->billId = $billId;
