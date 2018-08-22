@@ -23,7 +23,11 @@ class ConfigTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->config = new Portmone\Config(static::KEY, static::SECRET, static::PAYEE);
+        $this->config = new Portmone\Config(
+            static::KEY,
+            static::SECRET,
+            static::PAYEE
+        );
     }
 
     public function testKey(): void
@@ -64,6 +68,11 @@ class ConfigTest extends TestCase
      */
     public function testInvalidLanguage(): void
     {
-        new Portmone\Config(static::KEY, static::SECRET, static::PAYEE, 'invalidLanguage');
+        new Portmone\Config(
+            static::KEY,
+            static::SECRET,
+            static::PAYEE,
+            'invalidLanguage'
+        );
     }
 }
