@@ -8,6 +8,8 @@ use Wearesho\Bobra\Portmone;
 /**
  * Class ConfigTest
  * @package Wearesho\Bobra\Portmone\Tests
+ * @coversDefaultClass \Wearesho\Bobra\Portmone\Config
+ * @internal
  */
 class ConfigTest extends TestCase
 {
