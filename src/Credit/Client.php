@@ -9,6 +9,7 @@ use GuzzleHttp;
 use Nekman\LuhnAlgorithm;
 
 use Psr\Http\Message\ResponseInterface;
+
 use Wearesho\Bobra\Payments\Credit;
 use Wearesho\Bobra\Portmone\Config;
 use Wearesho\Bobra\Portmone\Credit\Response\Result;

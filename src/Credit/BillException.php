@@ -2,20 +2,19 @@
 
 namespace Wearesho\Bobra\Portmone\Credit;
 
-use Wearesho\Bobra\Payments\Credit\Exception;
-use Wearesho\Bobra\Payments\Credit\TransferInterface;
+use Wearesho\Bobra\Payments;
 
 /**
  * Class BillException
  * @package Wearesho\Bobra\Portmone\Credit
  */
-class BillException extends Exception
+class BillException extends Payments\Credit\Exception
 {
     /** @var string */
     protected $errorCode;
 
     public function __construct(
-        TransferInterface $transfer,
+        Payments\Credit\TransferInterface $transfer,
         string $errorCode,
         string $message,
         int $code = 0,

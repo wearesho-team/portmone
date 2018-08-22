@@ -2,13 +2,13 @@
 
 namespace Wearesho\Bobra\Portmone\Credit;
 
-use Wearesho\Bobra\Payments\Credit;
+use Wearesho\Bobra\Payments;
 
 /**
  * Class Payment
  * @package Wearesho\Bobra\Portmone\Credit
  */
-class Payment implements Credit\Response
+class Payment implements Payments\Credit\Response
 {
     /** @var string */
     protected $billId;
