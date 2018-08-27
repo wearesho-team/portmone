@@ -2,9 +2,11 @@
 
 namespace Wearesho\Bobra\Portmone\Tests;
 
+use Wearesho\Bobra\Portmone\ConfigInterface;
 use Wearesho\Bobra\Portmone\EnvironmentConfig;
 
 use PHPUnit\Framework\TestCase;
+use Wearesho\Bobra\Portmone\Language;
 
 /**
  * Class EnvironmentConfigTest
@@ -59,15 +61,14 @@ class EnvironmentConfigTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \Horat1us\Environment\MissingEnvironmentException
-     * @expectedExceptionMessage Missing environment key PORTMONE_URL
-     */
     public function testGetEmptyUrl(): void
     {
         putenv('PORTMONE_URL');
 
-        $this->fakeEnvironmentConfig->getUrl();
+        $this->assertEquals(
+            ConfigInterface::URL,
+            $this->fakeEnvironmentConfig->getUrl()
+        );
     }
 
     public function testGetPayee(): void
@@ -101,15 +102,14 @@ class EnvironmentConfigTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \Horat1us\Environment\MissingEnvironmentException
-     * @expectedExceptionMessage Missing environment key PORTMONE_LANGUAGE
-     */
     public function testGetEmptyLanguage(): void
     {
         putenv('PORTMONE_LANGUAGE');
 
-        $this->fakeEnvironmentConfig->getLanguage();
+        $this->assertEquals(
+            Language::RU,
+            $this->fakeEnvironmentConfig->getLanguage()
+        );
     }
 
     public function testGetSecret(): void
