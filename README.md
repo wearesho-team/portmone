@@ -176,7 +176,7 @@ $payment = $client->send(new Payments\Credit\Transfer(
 - [Wearesho](https://wearesho.com)
 - [Alexander Letnikow](mailto:reclamme@gmail.com)
 - [Roman Varkuta](mailto:roman.varkuta@gmail.com)
-- [Alexander Yagich]()
+- [Alexander Yagich](mailto:aleksa.yagich@gmail.com)
 
 ## License
 [MIT](./LICENSE.md)
