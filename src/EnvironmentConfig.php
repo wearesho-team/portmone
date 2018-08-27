@@ -10,6 +10,8 @@ use Horat1us\Environment;
  */
 class EnvironmentConfig extends Environment\Config implements ConfigInterface
 {
+    use ValidateLanguage;
+
     public function __construct(string $keyPrefix = 'PORTMONE_')
     {
         parent::__construct($keyPrefix);
@@ -37,6 +39,10 @@ class EnvironmentConfig extends Environment\Config implements ConfigInterface
 
     public function getLanguage(): string
     {
-        return $this->getEnv('LANGUAGE', Language::RU);
+        $url = $this->getEnv('LANGUAGE', Language::RU);
+
+        $this->validateLanguage($url);
+
+        return $url;
     }
 }

@@ -2,16 +2,14 @@
 
 namespace Wearesho\Bobra\Portmone\Tests;
 
-use Wearesho\Bobra\Portmone\ConfigInterface;
-use Wearesho\Bobra\Portmone\EnvironmentConfig;
-
 use PHPUnit\Framework\TestCase;
-use Wearesho\Bobra\Portmone\Language;
+
+use Wearesho\Bobra\Portmone;
 
 /**
  * Class EnvironmentConfigTest
  * @package Wearesho\Bobra\Portmone\Tests
- * @coversDefaultClass EnvironmentConfig
+ * @coversDefaultClass Portmone\EnvironmentConfig
  * @internal
  */
 class EnvironmentConfigTest extends TestCase
@@ -19,15 +17,16 @@ class EnvironmentConfigTest extends TestCase
     protected const KEY = 'testKey';
     protected const URL = 'testUrl';
     protected const PAYEE = 'testPayee';
-    protected const LANGUAGE = 'testLanguage';
+    protected const LANGUAGE = 'ru';
+    protected const INVALID_LANGUAGE = 'invalidRu';
     protected const SECRET = 'testSecret';
 
-    /** @var EnvironmentConfig */
+    /** @var Portmone\EnvironmentConfig */
     protected $fakeEnvironmentConfig;
 
     protected function setUp(): void
     {
-        $this->fakeEnvironmentConfig = new EnvironmentConfig();
+        $this->fakeEnvironmentConfig = new Portmone\EnvironmentConfig();
     }
 
     public function testGetKey(): void
@@ -66,7 +65,7 @@ class EnvironmentConfigTest extends TestCase
         putenv('PORTMONE_URL');
 
         $this->assertEquals(
-            ConfigInterface::URL,
+            Portmone\ConfigInterface::URL,
             $this->fakeEnvironmentConfig->getUrl()
         );
     }
@@ -102,12 +101,23 @@ class EnvironmentConfigTest extends TestCase
         );
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Unsupported language invalidRu
+     */
+    public function testValidateLanguage(): void
+    {
+        putenv('PORTMONE_LANGUAGE=' . static::INVALID_LANGUAGE);
+
+        $this->fakeEnvironmentConfig->getLanguage();
+    }
+
     public function testGetEmptyLanguage(): void
     {
         putenv('PORTMONE_LANGUAGE');
 
         $this->assertEquals(
-            Language::RU,
+            Portmone\Language::RU,
             $this->fakeEnvironmentConfig->getLanguage()
         );
     }
